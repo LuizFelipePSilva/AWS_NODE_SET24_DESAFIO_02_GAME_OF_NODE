@@ -8,6 +8,8 @@ export class  wCreateOrder1730153267365 implements MigrationInterface {
                 columns: [
                     { name: "id", type: "uuid", isPrimary: true },
                     { name: "clientId", type: "uuid", isNullable: false },
+                     { name: "clientName", type: "varchar", isNullable: false },
+                    { name: "clientEmail", type: "varchar", isNullable: false },
                     { name: "orderDate", type: "timestamp", default: "now()" },
                     { name: "status", type: "enum", enum: ["Aberto", "Aprovado", "Cancelado"], isNullable: false },
                     { name: "cep", type: "varchar", isNullable: false },
