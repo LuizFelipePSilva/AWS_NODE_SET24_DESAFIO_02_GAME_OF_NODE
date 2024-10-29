@@ -1,7 +1,7 @@
 import jwt from '@config/auth';
 import { NextFunction, Request, Response } from 'express';
 import { Secret, verify } from 'jsonwebtoken';
-import AppError from '@shared/errors/AppError'
+import AppError from '@shared/errors/AppError';
 
 interface ITokenPayload {
   iat: number;
@@ -11,7 +11,7 @@ interface ITokenPayload {
 export default function isAuthenticate(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ): void {
   const authHeader = req.headers.authorization;
 

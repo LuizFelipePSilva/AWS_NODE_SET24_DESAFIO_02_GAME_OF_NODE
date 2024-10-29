@@ -1,10 +1,10 @@
-import "reflect-metadata";
-import express, { Request, Response, NextFunction } from "express";
-import "express-async-errors";
-import cors from "cors";
-import { errors } from "celebrate";
-import "./database/index"; // Importa as configurações de conexão
-import routes from "./routes/index.routes"; // Importa as rotas da aplicação
+import 'reflect-metadata';
+import express, { Request, Response, NextFunction } from 'express';
+import 'express-async-errors';
+import cors from 'cors';
+import { errors } from 'celebrate';
+import './database/index'; // Importa as configurações de conexão
+import routes from './routes/index.routes'; // Importa as rotas da aplicação
 
 const app = express();
 
@@ -19,15 +19,15 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof Error) {
     // Erros esperados
     return res.status(400).json({
-      status: "error",
+      status: 'error',
       message: err.message,
     });
   }
 
   // Erros desconhecidos
   return res.status(500).json({
-    status: "error",
-    message: "Internal Server Error",
+    status: 'error',
+    message: 'Internal Server Error',
   });
 });
 
