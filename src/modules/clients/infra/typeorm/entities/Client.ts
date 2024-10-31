@@ -36,4 +36,4 @@ class Client {
   deletedAt: Date;
 }
 
-export default Client
+export default Client;
