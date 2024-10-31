@@ -4,7 +4,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany
 } from 'typeorm';
+import {Order}from '@modules/orders/infra/typeorm/entities/Order';
 
 @Entity('clients')
 class Client {
@@ -31,6 +33,9 @@ class Client {
 
   @Column({ type: 'timestamp', nullable: true })
   deletedAt: Date;
+
+  @OneToMany(() =>Order, (order) => order.car)
+  order: Order[];
 }
 
 export default Client;
