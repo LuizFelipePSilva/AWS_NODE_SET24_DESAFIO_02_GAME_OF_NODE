@@ -34,8 +34,8 @@ class Client {
   @Column({ type: 'timestamp', nullable: true })
   deletedAt: Date;
 
-  @OneToMany(() =>Order, (order) => order.car)
-  order: Order[];
+  @OneToMany(() =>Order, (order) => order.client)
+  orders: Order[];
 }
 
 export default Client;

@@ -7,7 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import Client  from '@modules/clients/infra/typeorm/entities/Client';
+import Client from '@modules/clients/infra/typeorm/entities/Client';
 import Car  from '@modules/cars/entities/Car';
 
 @Entity('orders')
@@ -58,7 +58,7 @@ export class Order {
   @JoinColumn({ name: 'clientId' })
   client: Client;
 
-  @ManyToOne(() => Car, (car) => car.orders, { onDelete: 'SET NULL' })
+  @ManyToOne(() => Car, (car) => car.order, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'carId' })
   car: Car;
 }
