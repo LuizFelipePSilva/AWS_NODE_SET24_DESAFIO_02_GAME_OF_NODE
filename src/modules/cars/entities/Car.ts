@@ -4,7 +4,9 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
+    OneToMany
   } from 'typeorm';
+  import { Order } from '@modules/orders/infra/typeorm/entities/Order';
   
   @Entity('car')
   class Car {
@@ -44,6 +46,9 @@ import {
   
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @OneToMany(() =>Order, (order) => order.car)
+    orders: Order[];
   }
   
   export default Car;
