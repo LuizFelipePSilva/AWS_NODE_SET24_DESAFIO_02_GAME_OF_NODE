@@ -10,7 +10,7 @@ dist
 .editorconfig
 .prettierrc
 eslint.config.js
- 
+.docker
+
 uploads/*
 !uploads/.gitkeep
-.docker
