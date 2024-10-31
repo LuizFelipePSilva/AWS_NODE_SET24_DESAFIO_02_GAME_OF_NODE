@@ -58,7 +58,7 @@ export class Order {
   @JoinColumn({ name: 'clientId' })
   client: Client;
 
-  @ManyToOne(() => Car, (car) => car.order, { onDelete: 'SET NULL' })
+  @ManyToOne(() => Car, (car) => car.orders, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'carId' })
   car: Car;
 }
