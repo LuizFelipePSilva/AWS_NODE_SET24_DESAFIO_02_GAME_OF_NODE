@@ -1,7 +1,7 @@
 export interface IRequestUpdateOrder{
   id: string;
-  startDate?: Date;
-  endDate?: Date;
+  orderDate?: Date;
+  purchaseDate?: Date;
   cep?: string;
   status?: 'Aprovado' | 'Cancelado';
 }
