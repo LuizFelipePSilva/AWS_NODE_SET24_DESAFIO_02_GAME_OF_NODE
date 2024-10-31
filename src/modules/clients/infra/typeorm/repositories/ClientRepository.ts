@@ -3,6 +3,9 @@ import Client from '../entities/Client';
 
 @EntityRepository(Client)
 class ClientRepository extends Repository<Client> {
+  static findByEmail(email: string) {
+    throw new Error('Method not implemented.');
+  }
   public async findByName(fullName: string): Promise<Client | undefined> {
     const client = await this.findOne({
       where: {
