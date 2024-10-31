@@ -13,3 +13,4 @@ eslint.config.js
  
 uploads/*
 !uploads/.gitkeep
+.docker
