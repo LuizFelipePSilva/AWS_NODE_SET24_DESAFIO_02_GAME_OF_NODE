@@ -7,3 +7,5 @@ orderRoute.get('/', )
 orderRoute.get('/:id', )
 orderRoute.patch('/:id',)
 orderRoute.get('/:id', )
+
+export default orderRoute
