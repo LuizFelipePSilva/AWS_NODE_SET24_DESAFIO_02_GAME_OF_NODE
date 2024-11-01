@@ -8,15 +8,7 @@ import fetch from 'node-fetch'
 const validUFs = ['AL', 'BA', 'CE', 'MA', 'PB', 'PE', 'PI', 'RN', 'SE'];
 
 @injectable()
-<<<<<<< HEAD
-<<<<<<< HEAD
-class CreateOrderService {
-=======
 class UpdateOrderService {
->>>>>>> main
-=======
-class UpdateOrderService {
->>>>>>> main
   constructor(
     @inject('OrdersRepository')
     private ordersRepository: IOrderRepository,
@@ -24,18 +16,8 @@ class UpdateOrderService {
 
   public async execute({
     id,
-<<<<<<< HEAD
-<<<<<<< HEAD
-    startDate,
-    endDate,
-=======
     orderDate,
     purchaseDate,
->>>>>>> main
-=======
-    orderDate,
-    purchaseDate,
->>>>>>> main
     cep,
     status,
   }: IRequestUpdateOrder): Promise<IOrder> {
@@ -45,37 +27,18 @@ class UpdateOrderService {
       throw new AppError('Order not found.');
     }
 
-<<<<<<< HEAD
-    if (startDate && startDate < new Date()) {
+    if ( orderDate &&  orderDate < new Date()) {
       throw new AppError('Data Hora Inicial não pode ser menor que hoje.');
     }
 
-    if (endDate && startDate && endDate < startDate) {
-=======
-    if (orderDate && orderDate < new Date()) {
-      throw new AppError('Data Hora Inicial não pode ser menor que hoje.');
-    }
-
-    if (purchaseDate && orderDate && purchaseDate < orderDate) {
->>>>>>> main
+    if (purchaseDate &&  orderDate && purchaseDate <  orderDate) {
       throw new AppError('Data Hora Final não pode ser menor que Data Hora Inicial.');
     }
 
     let cidade, uf;
     if (cep) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const cepData = await response.json();
-=======
       const resp = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
       const cepData = await resp.json();
->>>>>>> main
-=======
-      const resp = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const cepData = await resp.json();
->>>>>>> main
-
       if (cepData.erro) {
         throw new AppError('CEP não encontrado.');
       }
@@ -109,13 +72,7 @@ class UpdateOrderService {
       }
       order.status = status;
     }
-
-
-<<<<<<< HEAD
-    Object.assign(order, { startDate, endDate });
-=======
     Object.assign(order, { orderDate, purchaseDate });
->>>>>>> main
 
     await this.ordersRepository.update(order);
 
@@ -124,12 +81,5 @@ class UpdateOrderService {
   }
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-export default CreateOrderService;
-=======
 export default UpdateOrderService;
->>>>>>> main
-=======
-export default UpdateOrderService;
->>>>>>> main
+
