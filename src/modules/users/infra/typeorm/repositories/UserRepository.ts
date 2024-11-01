@@ -10,14 +10,19 @@ export class UserRepository implements IUserRepository {
     constructor() {
         this.ormRepository= getRepository(User);
     }
-
+    
     async create(user: IUser): Promise<IUser> {
         const newUser = this.ormRepository.create(user);
         return await this.ormRepository.save(newUser);
     }
-
+    
     public async findById(id: string): Promise<IUser | null> {
         return await this.ormRepository.findOne(id) || null;
+    }
+    
+    public async findByEmail(email: string): Promise<IUser | null> {
+        return await this.ormRepository.findOne(email) || null;
+        
     }
 
     findAll({ name, email, deleted }: { name: string; email: string; deleted: boolean; }): Promise<IUserPaginate> {

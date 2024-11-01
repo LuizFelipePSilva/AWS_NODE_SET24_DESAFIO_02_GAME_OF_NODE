@@ -1,6 +1,5 @@
-export interface IUser {
+export interface IRequestCreateUser {
   fullName: string;
   email: string;
   password: string;
-  createdAt: Date;
 }
