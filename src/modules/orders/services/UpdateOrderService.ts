@@ -27,11 +27,11 @@ class UpdateOrderService {
       throw new AppError('Order not found.');
     }
 
-    if (startDate && startDate < new Date()) {
+    if (orderDate && orderDate < new Date()) {
       throw new AppError('Data Hora Inicial não pode ser menor que hoje.');
     }
 
-    if (endDate && startDate && endDate < startDate) {
+    if (purchaseDate && orderDate && purchaseDate < orderDate) {
       throw new AppError('Data Hora Final não pode ser menor que Data Hora Inicial.');
     }
 
@@ -75,7 +75,7 @@ class UpdateOrderService {
     }
 
 
-    Object.assign(order, { startDate, endDate });
+    Object.assign(order, { orderDate, purchaseDate });
 
     await this.ordersRepository.update(order);
 

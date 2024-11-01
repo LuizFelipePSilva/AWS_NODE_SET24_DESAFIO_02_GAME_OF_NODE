@@ -10,13 +10,13 @@ import fetch from 'node-fetch'
 @injectable()
 class CreateOrderService {
   constructor(
-    @inject('OrdersRepository')
+    @inject('OrderRepository')
     private ordersRepository: IOrderRepository,
 
-    @inject('CustomersRepository')
+    @inject('ClientRepository')
     private clientRepository: IClientRepository,
 
-    @inject('ProductsRepository')
+    @inject('CarRepository')
     private carsRepository: ICarsRepository
   ) {}
 
