@@ -8,7 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import Client from '@modules/clients/infra/typeorm/entities/Client';
-import Car  from '@modules/cars/entities/Car';
+import Car from '@modules/cars/infra/typeorm/entities/Cars';
 
 @Entity('orders')
 export class Order {
