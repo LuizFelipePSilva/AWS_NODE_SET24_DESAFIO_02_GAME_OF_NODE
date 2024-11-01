@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 @Entity('clients')
-class Clients {
+class Client {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -26,9 +26,6 @@ class Clients {
   @Column()
   phone: string;
 
-  @Column()
-  password: string;
-
   @CreateDateColumn()
   createdAt: Date;
 
@@ -36,4 +33,4 @@ class Clients {
   deletedAt: Date;
 }
 
-export default Clients
+export default Client;
