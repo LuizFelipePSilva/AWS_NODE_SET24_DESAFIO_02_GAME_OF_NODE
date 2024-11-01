@@ -4,7 +4,7 @@ import { IRequestCreateOrder } from '../domain/models/IRequetCreateOrder';
 import { IOrderRepository } from '../domain/repositories/IOrderRepository';
 import { IOrder } from '../domain/models/IOrder';
 import { IClientRepository } from '@modules/client/domain/repositories/IClientRepository';
-import { ICarsRepository } from '@modules/cars/domain/repositories/ICarsRepository';
+import { ICarRepository } from '@modules/cars/domain/repositories/ICarRepository';
 import fetch from 'node-fetch'
 
 @injectable()
@@ -17,7 +17,7 @@ class CreateOrderService {
     private clientRepository: IClientRepository,
 
     @inject('CarRepository')
-    private carsRepository: ICarsRepository
+    private carsRepository: ICarRepository
   ) {}
 
   public async execute({
