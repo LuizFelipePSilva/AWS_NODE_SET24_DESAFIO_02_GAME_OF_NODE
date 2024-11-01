@@ -8,7 +8,11 @@ import fetch from 'node-fetch'
 const validUFs = ['AL', 'BA', 'CE', 'MA', 'PB', 'PE', 'PI', 'RN', 'SE'];
 
 @injectable()
+<<<<<<< HEAD
 class CreateOrderService {
+=======
+class UpdateOrderService {
+>>>>>>> main
   constructor(
     @inject('OrdersRepository')
     private ordersRepository: IOrderRepository,
@@ -16,8 +20,13 @@ class CreateOrderService {
 
   public async execute({
     id,
+<<<<<<< HEAD
     startDate,
     endDate,
+=======
+    orderDate,
+    purchaseDate,
+>>>>>>> main
     cep,
     status,
   }: IRequestUpdateOrder): Promise<IOrder> {
@@ -37,8 +46,13 @@ class CreateOrderService {
 
     let cidade, uf;
     if (cep) {
+<<<<<<< HEAD
       const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
       const cepData = await response.json();
+=======
+      const resp = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const cepData = await resp.json();
+>>>>>>> main
 
       if (cepData.erro) {
         throw new AppError('CEP não encontrado.');
@@ -84,4 +98,8 @@ class CreateOrderService {
   }
 }
 
+<<<<<<< HEAD
 export default CreateOrderService;
+=======
+export default UpdateOrderService;
+>>>>>>> main
