@@ -1,3 +1,4 @@
+import { ICreateUser } from "../models/ICreateUser";
 import { IUser } from "../models/IUser";
 import { IUserPaginate } from "../models/IUserPaginate";
 
@@ -8,7 +9,7 @@ type SearchParams = {
 }
 
 export interface IUserRepository {
-    create(user: IUser): Promise<IUser>;
+    create(user: ICreateUser): Promise<IUser>;
     save(user: IUser): Promise<IUser>;
     findById(id: string): Promise<IUser | null>;
     findByEmail(email: string): Promise<IUser | null>;

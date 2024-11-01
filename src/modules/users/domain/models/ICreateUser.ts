@@ -1,5 +1,4 @@
-export interface IUser {
-  id: string,
+export interface ICreateUser {
   fullName: string;
   email: string;
   password: string;
