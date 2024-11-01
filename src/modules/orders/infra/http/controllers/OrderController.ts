@@ -14,7 +14,11 @@ export default class OrdersController {
 
     const orders = await listOrders.execute({ page, limit });
 
+<<<<<<< HEAD
+    return response.json(orders);
+=======
     return response.json(orders)
+>>>>>>> main
   }
 
   public async show(request: Request, response: Response): Promise<Response> {
@@ -24,7 +28,11 @@ export default class OrdersController {
 
     const order = await showOrder.execute({ id });
 
+<<<<<<< HEAD
+    return response.json(order);
+=======
     return response.json(order)
+>>>>>>> main
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
