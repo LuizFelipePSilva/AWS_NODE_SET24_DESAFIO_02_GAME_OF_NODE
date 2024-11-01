@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { Router } from "express"; 
-
-const orderRoute = Router()
-
-orderRoute.post('/', )
-orderRoute.get('/', )
-orderRoute.get('/:id', )
-orderRoute.patch('/:id',)
-orderRoute.get('/:id', )
-=======
-=======
->>>>>>> main
 import isAuthenticate from '@shared/infra/http/middlewares/isAuthenticated';
 import { Router } from 'express';
 import OrdersController from '../controllers/OrderController';
@@ -76,7 +62,3 @@ orderRoute.delete(
 );
 
 export default orderRoute;
-<<<<<<< HEAD
->>>>>>> main
-=======
->>>>>>> main
