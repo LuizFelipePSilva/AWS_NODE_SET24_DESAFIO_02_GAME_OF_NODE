@@ -5,6 +5,7 @@ import { getRepository, Repository } from "typeorm";
 import { User } from "../entities/User";
 
 export class UserRepository implements IUserRepository {
+    [x: string]: any;
     private ormRepository: Repository<User>;
 
     constructor() {
@@ -14,6 +15,10 @@ export class UserRepository implements IUserRepository {
     async create(user: IUser): Promise<IUser> {
         const newUser = this.ormRepository.create(user);
         return await this.ormRepository.save(newUser);
+    }
+
+    async save(user: IUser): Promise<IUser> {
+        return await this.ormRepository.save(user);
     }
     
     public async findById(id: string): Promise<IUser | null> {
