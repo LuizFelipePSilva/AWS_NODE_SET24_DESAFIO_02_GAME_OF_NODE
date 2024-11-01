@@ -2,13 +2,17 @@ import { inject, injectable } from "tsyringe";
 import { IUserRepository } from "../domain/repositories/IUserRepository";
 import { IRequestCreateUser } from "../domain/models/IRequestCreateUser";
 import AppError from "@shared/errors/AppError";
+import { IHashProvider } from "../providers/HashProvider/models/IHashProvider";
 
 @injectable()
 class CreateUserService {
 
     constructor(
         @inject('UserRepository')
-        private userRepository: IUserRepository,      
+        private userRepository: IUserRepository, 
+        
+        @inject('HashProvider')
+        private hashProvider: IHashProvider,
     ) {}
 
 
@@ -27,10 +31,12 @@ class CreateUserService {
             throw new AppError('Informe uma senha');
         }
 
+        const hashedPassword = await this.hashProvider.generateHash(password);
+
         const user = await this.userRepository.create({
             fullName,
             email,
-            password,
+            password: hashedPassword,
             createdAt: new Date(),
         });
 
