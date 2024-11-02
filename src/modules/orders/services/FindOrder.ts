@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import { IOrderRepository } from '../domain/repositories/IOrderRepository';
 import { IOrderPaginate } from '../domain/models/IOrderPaginate';
 import { IShowOrderResponse } from '../domain/models/IShowOrderResponse';
+import { IClientRepository } from '@modules/clients/domain/repositories/IClientRepository';
 
 interface SearchParams {
   page: number;

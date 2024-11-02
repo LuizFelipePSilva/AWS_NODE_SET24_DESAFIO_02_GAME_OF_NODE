@@ -3,9 +3,9 @@ import AppError from '@shared/errors/AppError';
 import { IRequestCreateOrder } from '../domain/models/IRequetCreateOrder';
 import { IOrderRepository } from '../domain/repositories/IOrderRepository';
 import { IOrder } from '../domain/models/IOrder';
-import { IClientRepository } from '@modules/client/domain/repositories/IClientRepository';
+import { IClientRepository } from '@modules/clients/domain/repositories/IClientRepository'
 import { ICarRepository } from '@modules/cars/domain/repositories/ICarRepository';
-import fetch from 'node-fetch'
+import axios from 'axios';
 
 @injectable()
 class CreateOrderService {
@@ -30,13 +30,17 @@ class CreateOrderService {
     if (!clientExists) {
       throw new AppError('Cliente não existe');
     }
+    const orderIsOpen = await this.ordersRepository.findByClient(clientId)
+
+    const verifyClientOrder = orderIsOpen?.status === 'Aberto'
+
     const clients =  {
       email: clientExists.email,
-      name: clientExists.name,
+      name: clientExists.fullName,
     }
-    const orderIsOpen =  await clientExists.filter((order) => order.status);
+   
 
-    if ((orderIsOpen == 'Aberto')) {
+    if ((verifyClientOrder)) {
       throw new AppError('Cliente tem um pedido em aberto');
     }
 
@@ -56,12 +60,9 @@ class CreateOrderService {
     if(!validarCep(cep)){
       throw new AppError('Cep Invalido ou foi digitado incorretamente.')
     }
-    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-    if (!response.ok) {
-      throw new AppError('Erro ao consultar o CEP');
-    }
+    const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
 
-    const addressData = await response.json();
+    const addressData = response.data
     
     if (addressData.erro) {
       throw new AppError('CEP não encontrado');
