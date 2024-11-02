@@ -2,6 +2,7 @@ import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
 import Client from '../infra/typeorm/entities/Client';
 import ClientRepository from '../infra/typeorm/repositories/ClientRepository';
+import { inject, injectable } from 'tsyringe';
 
 interface IRequest {
   id: string;
@@ -12,10 +13,17 @@ interface IRequest {
   phone?: string; 
 }
 
+@injectable()
 class UpdateClientService {
+
+  constructor(
+    @inject('ClientRepository')
+    private clientRepository: ClientRepository){
+  }
+  
   public async execute({ id, fullName, email, cpf, birthDate, phone }: IRequest): Promise<Client> {
-    const clientsRepository = getCustomRepository(ClientRepository);
-    const client = await clientsRepository.findById(id);
+    const clientRepository = getCustomRepository(ClientRepository);
+    const client = await this.clientRepository.findById(id);
 
     if (!client) {
       throw new AppError('Client not found.');
@@ -23,7 +31,7 @@ class UpdateClientService {
 
     // Validação de e-mail e CPF
     if (email && email !== client.email) {
-      const emailExists = await clientsRepository.findByEmail(email);
+      const emailExists = await this.clientRepository.findByEmail(email);
       if (emailExists) {
         throw new AppError('There is already one client with this email.');
       }
@@ -31,7 +39,7 @@ class UpdateClientService {
     }
 
     if (cpf && cpf !== client.cpf) {
-      const cpfExists = await clientsRepository.findByCPF(cpf);
+      const cpfExists = await this.clientRepository.findByCPF(cpf);
       if (cpfExists) {
         throw new AppError('There is already one client with this CPF.');
       }
@@ -43,7 +51,7 @@ class UpdateClientService {
     client.cpf = cpf || client.cpf;
     client.phone = phone || client.phone;
 
-    await clientsRepository.save(client);
+    await this.clientRepository.save(client);
     
     return client;
   }

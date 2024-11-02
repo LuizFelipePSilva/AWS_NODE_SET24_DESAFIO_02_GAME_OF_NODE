@@ -4,6 +4,7 @@ import ListClientService from '@modules/clients/services/ListClientService';
 import ShowClientService from '@modules/clients/services/ShowClientService';
 import UpdateClientService from '@modules/clients/services/UpdateClientService';
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 
 export default class ClientsController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -27,7 +28,7 @@ export default class ClientsController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { fullName, email, cpf, birthDate, phone } = request.body; 
 
-    const createClient = new CreateClientService();
+    const createClient = container.resolve(CreateClientService);
 
     const client = await createClient.execute({
       fullName,

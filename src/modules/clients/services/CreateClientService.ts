@@ -1,11 +1,12 @@
 import AppError from '@shared/errors/AppError';
-import { getCustomRepository } from 'typeorm';
-import Client from '../infra/typeorm/entities/Client';
-import ClientRepository from '../infra/typeorm/repositories/ClientRepository';
+import { IClientRepository } from '../domain/repositories/IClientRepository';
+import { ICreateClient } from '../domain/models/ICreateClient';
+import { IClient } from '../domain/models/IClient';
+import { inject, injectable } from 'tsyringe';
 
 
 function isValidCPF(cpf: string): boolean {
-  // Remove caracteres que não são numéricos
+  // Remove caracteres que não tem numéricos
   cpf = cpf.replace(/[^\d]+/g, '');
 
   if (cpf.length !== 11 || /^(.)\1{10}$/.test(cpf)) return false;
@@ -41,17 +42,22 @@ interface IRequest {
   phone: string;
 }
 
+@injectable()
 class CreateClientService {
-  public async execute({ fullName, email, cpf, birthDate, phone }: IRequest): Promise<Client> {
-    const clientsRepository = getCustomRepository(ClientRepository);
-    
+
+  constructor(
+    @inject('ClientRepository')
+    private clientRepository: IClientRepository){
+  }
+
+  public async execute({ fullName, email, cpf, birthDate, phone }: ICreateClient): Promise<IClient> {    
   
     if (!isValidCPF(cpf)) {
       throw new AppError('Invalid CPF.');
     }
 
-    const emailExists = await clientsRepository.findByEmail(email);
-    const cpfExists = await clientsRepository.findByCPF(cpf);
+    const emailExists = await this.clientRepository.findByEmail(email);
+    const cpfExists = await this.clientRepository.findByCPF(cpf);
 
     if (emailExists) {
       throw new AppError('Email address already used.');
@@ -61,15 +67,13 @@ class CreateClientService {
       throw new AppError('CPF already used.');
     }
 
-    const client = clientsRepository.create({
+    const client = await this.clientRepository.create({
       fullName,
       email,
       cpf,
       birthDate,
       phone,
     });
-
-    await clientsRepository.save(client);
 
     return client;
   }

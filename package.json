@@ -47,7 +47,7 @@
     "nodemailer": "6.4.17",
     "pg": "8.5.1",
     "reflect-metadata": "0.1.13",
-    "tsyringe": "4.8.0",
+    "tsyringe": "^4.8.0",
     "typeorm": "0.2.29",
     "typeorm-pagination": "2.0.1",
     "uuid": "10.0.0"
