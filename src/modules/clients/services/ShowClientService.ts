@@ -28,4 +28,4 @@ class ShowClientService {
   }
 }
 
-export default ShowClientService;
+export default ShowClientService

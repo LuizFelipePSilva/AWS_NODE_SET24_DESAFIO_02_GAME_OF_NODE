@@ -57,4 +57,4 @@ class UpdateClientService {
   }
 }
 
-export default UpdateClientService;
+export default UpdateClientService

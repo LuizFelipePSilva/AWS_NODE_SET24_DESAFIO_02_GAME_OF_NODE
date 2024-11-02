@@ -8,7 +8,7 @@ import { container } from 'tsyringe';
 
 export default class ClientsController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const listClients = new ListClientService();
+    const listClients = container.resolve(ListClientService);
     
     const clients = await listClients.execute();
     
@@ -18,7 +18,7 @@ export default class ClientsController {
   public async show(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
-    const showClient = new ShowClientService();
+    const showClient = container.resolve(ShowClientService);
 
     const client = await showClient.execute({ id });
 
@@ -46,7 +46,7 @@ export default class ClientsController {
 
     const { id } = request.params;
 
-    const updateClient = new UpdateClientService();
+    const updateClient = container.resolve(UpdateClientService);
 
     const client = await updateClient.execute({
       id,
@@ -63,7 +63,7 @@ export default class ClientsController {
   public async delete(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
-    const deleteClient = new DeleteClientService();
+    const deleteClient = container.resolve(DeleteClientService);
 
     await deleteClient.execute({ id });
     

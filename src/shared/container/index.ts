@@ -30,7 +30,6 @@ container.registerSingleton<IUserRepository>(
 container.registerSingleton<IClientRepository>(
   'ClientRepository', 
   ClientRepository
-
 );;
 
 

@@ -18,4 +18,4 @@ class ListClientService {
   }
 }
 
-export default ListClientService;
+export default ListClientService

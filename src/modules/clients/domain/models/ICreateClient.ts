@@ -3,5 +3,5 @@ export interface ICreateClient {
   birthDate: Date;
   cpf: string;
   email: string;
-  phone: string;
+  phone: string
 }

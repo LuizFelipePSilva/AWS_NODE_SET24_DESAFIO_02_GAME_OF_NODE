@@ -25,8 +25,8 @@ class DeleteClientService {
     }
 
     client.deletedAt = new Date();
-    await this.clientRepository.save(client); 
+    await this.clientRepository.save(client)
   }
 }
 
-export default DeleteClientService;
+export default DeleteClientService

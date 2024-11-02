@@ -31,7 +31,7 @@ function isValidCPF(cpf: string): boolean {
   if (remainder === 10 || remainder === 11) remainder = 0;
   if (remainder !== parseInt(cpf.charAt(10))) return false;
 
-  return true;
+  return true
 }
 
 interface IRequest {
