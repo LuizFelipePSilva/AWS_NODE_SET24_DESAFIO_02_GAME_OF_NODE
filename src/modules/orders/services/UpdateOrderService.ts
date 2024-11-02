@@ -3,8 +3,7 @@ import AppError from '@shared/errors/AppError';
 import { IRequestUpdateOrder } from '../domain/models/IRequestUpdate';
 import { IOrderRepository } from '../domain/repositories/IOrderRepository';
 import { IOrder } from '../domain/models/IOrder';
-import fetch from 'node-fetch'
-
+import axios from 'axios';
 const validUFs = ['AL', 'BA', 'CE', 'MA', 'PB', 'PE', 'PI', 'RN', 'SE'];
 
 @injectable()
@@ -37,8 +36,8 @@ class UpdateOrderService {
 
     let cidade, uf;
     if (cep) {
-      const resp = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const cepData = await resp.json();
+      const resp = await axios(`https://viacep.com.br/ws/${cep}/json/`);
+      const cepData = await resp.data
       if (cepData.erro) {
         throw new AppError('CEP não encontrado.');
       }

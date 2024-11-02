@@ -4,6 +4,8 @@ import { IShowOrder } from '../domain/models/IShowOrder';
 import { IOrderRepository } from '../domain/repositories/IOrderRepository';
 import { IOrder } from '../domain/models/IOrder';
 import { IShowOrderResponse } from '../domain/models/IShowOrderResponse';
+import { IClientRepository } from '@modules/clients/domain/repositories/IClientRepository';
+import { ICarRepository } from '@modules/cars/domain/repositories/ICarRepository';
 
 @injectable()
 class ShowOrderService {
@@ -13,7 +15,7 @@ class ShowOrderService {
     @inject('ClientRepository')
     private clientRepository: IClientRepository,
     @inject('CarsRepository')
-    private carsRepository: ICarsRepository,
+    private carsRepository: ICarRepository,
   ) {}
 
   public async execute({ id }: IShowOrder): Promise<IShowOrderResponse> {
