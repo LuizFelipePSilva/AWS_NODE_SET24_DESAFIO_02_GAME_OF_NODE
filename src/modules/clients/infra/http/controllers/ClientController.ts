@@ -5,13 +5,12 @@ import ShowClientService from '@modules/clients/services/ShowClientService';
 import UpdateClientService from '@modules/clients/services/UpdateClientService';
 import { Request, Response } from 'express';
 
-
 export default class ClientsController {
   public async index(request: Request, response: Response): Promise<Response> {
     const listClients = new ListClientService();
-
+    
     const clients = await listClients.execute();
-
+    
     return response.json(clients);
   }
 
@@ -26,20 +25,24 @@ export default class ClientsController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const { fullName, email } = request.body;
+    const { fullName, email, cpf, birthDate, phone } = request.body; 
 
     const createClient = new CreateClientService();
 
     const client = await createClient.execute({
       fullName,
       email,
+      cpf,
+      birthDate,
+      phone,
     });
 
     return response.json(client);
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { fullName, email } = request.body;
+    const { fullName, email, cpf, birthDate, phone } = request.body;
+
     const { id } = request.params;
 
     const updateClient = new UpdateClientService();
@@ -48,6 +51,9 @@ export default class ClientsController {
       id,
       fullName,
       email,
+      cpf,
+      birthDate,
+      phone,
     });
 
     return response.json(client);
@@ -59,7 +65,7 @@ export default class ClientsController {
     const deleteClient = new DeleteClientService();
 
     await deleteClient.execute({ id });
-
+    
     return response.json([]);
   }
 }

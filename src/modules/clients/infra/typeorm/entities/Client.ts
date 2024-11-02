@@ -3,10 +3,9 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
-  OneToMany
+  OneToMany,
 } from 'typeorm';
-import {Order}from '@modules/orders/infra/typeorm/entities/Order';
+import { Order } from '@modules/orders/infra/typeorm/entities/Order';
 
 @Entity('clients')
 class Client {
@@ -19,13 +18,13 @@ class Client {
   @Column({ type: 'date' })
   birthDate: Date;
 
-  @Column()
+  @Column({ unique: true })
   cpf: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
   @CreateDateColumn()
@@ -34,7 +33,7 @@ class Client {
   @Column({ type: 'timestamp', nullable: true })
   deletedAt: Date;
 
-  @OneToMany(() =>Order, (order) => order.client)
+  @OneToMany(() => Order, (order) => order.client, { eager: true })
   orders: Order[];
 }
 
