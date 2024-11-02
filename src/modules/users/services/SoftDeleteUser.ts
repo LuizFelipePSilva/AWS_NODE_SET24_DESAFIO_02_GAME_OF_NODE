@@ -1,6 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { IUserRepository } from '../domain/repositories/IUserRepository';
 import AppError from '@shared/errors/AppError';
+import { IRequestFindUserById } from '../domain/models/IRequestFindUserById';
 
 @injectable()
 class SoftDeleteUserService {
@@ -9,7 +10,7 @@ class SoftDeleteUserService {
     private userRepository: IUserRepository
   ) {}
 
-  public async execute(id: string): Promise<void> {
+  public async execute({id}: IRequestFindUserById): Promise<void> {
     const user = await this.userRepository.findById(id);
 
     if (!user) {

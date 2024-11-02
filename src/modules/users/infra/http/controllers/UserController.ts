@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { UserRepository } from '../../typeorm/repositories/UserRepository';
 import FindUserByIdService from '@modules/users/services/FindUserById';
 import ListUsersService from '@modules/users/services/ShowUsers';
 import CreateUserService from '@modules/users/services/CreateUser';
+import UpdateUserService from '@modules/users/services/UpdateUser';
+import SoftDeleteUserService from '@modules/users/services/SoftDeleteUser';
 
 export default class UserController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -63,5 +64,28 @@ export default class UserController {
     return response.json(user);
   }
 
-  
+  public async update(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+    const {fullName, email, password} = request.body;
+
+    const updateUser = container.resolve(UpdateUserService);
+
+    const user = await updateUser.execute({
+      id,
+      fullName,
+      email,
+      password,
+    })
+
+    return response.json(user);
+  }
+
+  public async softDelete(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+
+    const softDelete = container.resolve(SoftDeleteUserService);
+    const user = await softDelete.execute({ id });
+
+    return response.json(user);
+  }
 }
