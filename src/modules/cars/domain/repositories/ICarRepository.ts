@@ -1,17 +1,35 @@
 import { ICar } from '../models/ICar';
-import { ICarPaginate } from '../models/ICarPaginate';
+import { ICreateCar } from '../models/ICreateCar';
 
-type SearchParams = {
+export interface IFindAllWithFiltersParams {
+  status?: 'Ativo' | 'Inativo';
+  plateEnd?: string;
+  mark?: string;
+  model?: string;
+  items?: string[];
+  maxKm?: number;
+  yearFrom?: number;
+  yearTo?: number;
+  priceMin?: number;
+  priceMax?: number;
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
   page: number;
-  skip: number;
-  take: number;
-};
+  limit: number;
+}
+
+export interface IFindAllWithFiltersResponse {
+  data: ICar[];
+  total: number;
+  page: number;
+  limit: number;
+}
 
 export interface ICarRepository {
   findById(id: string): Promise<ICar | null>;
-  findAll({ page, skip, take }: SearchParams): Promise<ICarPaginate>;
-  //findByClient(id: string): Promise<ICar | null>; 
-  create(car: ICar): Promise<ICar>;
+  findByPlate(plate: string): Promise<ICar | null>;
+  create(car: ICreateCar): Promise<ICar>;
   update(car: ICar): Promise<ICar>;
-  delete(id: string): Promise<void>;
+  softDelete(id: string): Promise<void>;
+  findAllWithFilters(params: IFindAllWithFiltersParams): Promise<IFindAllWithFiltersResponse>;
 }
