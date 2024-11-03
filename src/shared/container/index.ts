@@ -11,6 +11,8 @@ import ClientRepository from '@modules/clients/infra/typeorm/repositories/Client
 
 import '@modules/users/providers';
 import { ICreateClient } from '@modules/clients/domain/models/ICreateClient';
+import { ICarItemRepository } from '@modules/cars/domain/repositories/ICarItemRepository';
+import CarItemRepository from '@modules/cars/infra/typeorm/repositories/CarItemRepository';
 
 container.registerSingleton<IOrderRepository>(
   'OrdersRepository',
@@ -20,6 +22,11 @@ container.registerSingleton<IOrderRepository>(
 container.registerSingleton<ICarRepository>(
   'CarRepository',
   CarRepository,
+);;
+
+container.registerSingleton<ICarItemRepository>(
+  'CarItemRepository',
+  CarItemRepository,
 );;
 
 container.registerSingleton<IUserRepository>(

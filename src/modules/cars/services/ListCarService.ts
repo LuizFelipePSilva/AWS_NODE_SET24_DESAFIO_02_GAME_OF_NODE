@@ -11,8 +11,8 @@ class ListCarsService {
     @inject('CarRepository')
     private carRepository: ICarRepository,
 
-    @inject('CarItemRepository')
-    private carItemRepository: ICarItemRepository,
+    // @inject('CarItemRepository')
+    // private carItemRepository: ICarItemRepository,
   ) {}
 
   public async execute({

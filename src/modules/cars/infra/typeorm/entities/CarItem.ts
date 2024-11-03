@@ -4,6 +4,7 @@ import {
     PrimaryGeneratedColumn,
     ManyToOne,
     JoinColumn,
+    CreateDateColumn,
   } from 'typeorm';
   import Cars from './Cars';
   
@@ -18,6 +19,12 @@ import {
     @ManyToOne(() => Cars, cars => cars.items, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'car_id' })
     cars: Cars;
+
+    @CreateDateColumn()
+    createdAt: Date | null;
+  
+    @CreateDateColumn()
+    updatedAt: Date | null;
   }
   
   export default CarItem;
