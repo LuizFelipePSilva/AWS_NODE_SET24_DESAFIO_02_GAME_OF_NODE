@@ -1,7 +1,7 @@
-import isAuthenticate from '@shared/infra/http/middlewares/isAuthenticated';
 import { Router } from 'express';
-import OrdersController from '../controllers/OrderController';
 import { celebrate, Joi, Segments } from 'celebrate';
+import isAuthenticate from '@shared/infra/http/middlewares/isAuthenticated';
+import OrdersController from '../controllers/OrderController';
 
 const orderController = new OrdersController();
 const orderRoute = Router();
@@ -11,8 +11,8 @@ orderRoute.post(
   isAuthenticate,
   celebrate({
     [Segments.BODY]: {
-      clientId: Joi.string().required(),
-      carId: Joi.string().required(),
+      clientId: Joi.string().uuid().required(),
+      carId: Joi.string().uuid().required(),
       cep: Joi.string().required(),
       value: Joi.number().required(),
     },
@@ -20,7 +20,24 @@ orderRoute.post(
   orderController.create
 );
 
-orderRoute.get('/', isAuthenticate, orderController.index);
+
+orderRoute.get(
+  '/',
+  isAuthenticate,
+  celebrate({
+    [Segments.QUERY]: {
+      page: Joi.number().integer().min(1).default(1),
+      limit: Joi.number().integer().min(1).default(10),
+      status: Joi.string().valid('Aberto', 'Aprovado', 'Cancelado').optional(),
+      cpf: Joi.string().optional(),
+      startDate: Joi.date().optional(),
+      endDate: Joi.date().optional(),
+      order: Joi.string().valid('ASC', 'DESC').default('DESC'),
+    },
+  }),
+  orderController.index
+);
+
 
 orderRoute.get(
   '/:id',
@@ -33,6 +50,7 @@ orderRoute.get(
   orderController.show
 );
 
+
 orderRoute.patch(
   '/:id',
   isAuthenticate,
@@ -41,10 +59,10 @@ orderRoute.patch(
       id: Joi.string().uuid().required(),
     },
     [Segments.BODY]: {
-      orderDate: Joi.date(),
-      purchaseDate: Joi.date(),
-      cep: Joi.string(),
-      status: Joi.string().valid('Aberto', 'Aprovado', 'Cancelado'),
+      orderDate: Joi.date().optional(),
+      purchaseDate: Joi.date().optional(),
+      cep: Joi.string().optional(),
+      status: Joi.string().valid('Aberto', 'Aprovado', 'Cancelado').optional(),
     },
   }),
   orderController.update

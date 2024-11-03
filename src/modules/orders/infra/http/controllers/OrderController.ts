@@ -8,11 +8,18 @@ import SoftDeleteOrderService from '@modules/orders/services/SoftDeleteOrder';
 
 export default class OrdersController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const page = request.query.page ? Number(request.query.page) : 1;
-    const limit = request.query.limit ? Number(request.query.limit) : 15;
-    const listOrders = container.resolve(ListOrderService);
+    const { page = 1, limit = 10, order, status, cpf, startDate, endDate } = request.query;
 
-    const orders = await listOrders.execute({ page, limit });
+    const listOrderService = container.resolve(ListOrderService);
+
+    const orders = await listOrderService.execute({
+      page: Number(page),
+      limit: Number(limit),
+      status: status as string,
+      cpf: cpf as string,
+      startDate: startDate ? new Date(startDate as string) : undefined,
+      endDate: endDate ? new Date(endDate as string) : undefined,
+    });
 
     return response.json(orders);
   }
