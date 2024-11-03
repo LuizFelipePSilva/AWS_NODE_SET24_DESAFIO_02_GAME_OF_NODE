@@ -17,7 +17,6 @@ class ShowClientService {
   }
 
   public async execute({ id }: IRequest): Promise<Client> {
-    const clientRepository = getCustomRepository(ClientRepository);
     const client = await this.clientRepository.findById(id);
 
     if (!client) {

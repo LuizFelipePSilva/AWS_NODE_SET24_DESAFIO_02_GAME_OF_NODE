@@ -22,7 +22,6 @@ class UpdateClientService {
   }
   
   public async execute({ id, fullName, email, cpf, birthDate, phone }: IRequest): Promise<Client> {
-    const clientRepository = getCustomRepository(ClientRepository);
     const client = await this.clientRepository.findById(id);
 
     if (!client) {
@@ -50,6 +49,7 @@ class UpdateClientService {
     client.email = email || client.email;
     client.cpf = cpf || client.cpf;
     client.phone = phone || client.phone;
+    client.birthDate = birthDate|| client.birthDate;
 
     await this.clientRepository.save(client);
     
