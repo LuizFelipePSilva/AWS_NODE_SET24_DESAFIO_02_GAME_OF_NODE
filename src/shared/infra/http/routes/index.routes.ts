@@ -7,8 +7,8 @@ import sessionRoutes from '@modules/users/infra/http/routes/Session.routes';
 const routes = Router();
 
 routes.use('/api/cars', carRoutes);
-routes.use('/api/v1/orders', orderRoute)
-routes.use('/clients', clientRoutes)
+routes.use('/api/orders', orderRoute)
+routes.use('api/clients', clientRoutes)
 routes.use('/api/users', userRoutes)
 routes.use('/api/session', sessionRoutes)
 
