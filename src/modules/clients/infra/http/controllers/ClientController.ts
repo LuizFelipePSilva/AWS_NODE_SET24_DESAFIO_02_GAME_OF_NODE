@@ -5,13 +5,45 @@ import ShowClientService from '@modules/clients/services/ShowClientService';
 import UpdateClientService from '@modules/clients/services/UpdateClientService';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import ClientRepository from '../../typeorm/repositories/ClientRepository';
 
 export default class ClientsController {
   public async index(request: Request, response: Response): Promise<Response> {
+    const {
+      page = 1,
+      size = 10,
+      name,
+      email,
+      excluded,
+      orderBy,
+    } = request.query;
+
+    const pageNumber = Number(page);
+    const pageSize = Number(size);
+    const isExcluded = excluded ? excluded === 'true' : undefined;
+
+    const allowedOrderFields = ['fullname', 'createdAt', 'deletedAt'] as const;
+    type OrderField = typeof allowedOrderFields[number];
+
+    const orderFields = orderBy
+      ? ((orderBy as string[]).filter((field) =>
+          allowedOrderFields.includes(field as OrderField)
+        ) as OrderField[])
+      : undefined;
+
     const listClients = container.resolve(ListClientService);
     
-    const clients = await listClients.execute();
+    // const clients = await listClients.execute();
     
+    const clients = await listClients.execute({
+      page: pageNumber,
+      size: pageSize,
+      fullname: name as string,
+      email: email as string,
+      excluded: isExcluded,
+      orderBy: orderFields,
+    });
+
     return response.json(clients);
   }
 

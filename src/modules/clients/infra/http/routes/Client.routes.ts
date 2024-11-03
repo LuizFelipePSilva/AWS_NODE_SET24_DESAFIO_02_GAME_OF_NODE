@@ -7,6 +7,21 @@ import { celebrate, Joi, Segments } from 'celebrate';
 const clientsController = new ClientsController();
 const clientRoutes = Router();
 
+clientRoutes.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      fullName: Joi.string().required(),
+      birthDate: Joi.date().required(),
+      cpf: Joi.string().length(11).required(),
+      email: Joi.string().email().required(),
+      phone: Joi.string().optional(),
+    },
+  }),
+  isAuthenticate,
+  clientsController.create,
+);
+
 clientRoutes.get('/', isAuthenticate, clientsController.index);
 
 clientRoutes.get(
@@ -20,24 +35,15 @@ clientRoutes.get(
   clientsController.show,
 );
 
-clientRoutes.post(
-  '/',
-  celebrate({
-    [Segments.BODY]: {
-      fullname: Joi.string().required(),
-      email: Joi.string().email().required(),
-    },
-  }),
-  isAuthenticate,
-  clientsController.create,
-);
-
 clientRoutes.patch(
   '/:id',
   celebrate({
     [Segments.BODY]: {
-      fullname: Joi.string().required(),
+      fullName: Joi.string().required(),
+      birthDate: Joi.date().required(),
+      cpf: Joi.string().length(11).required(),
       email: Joi.string().email().required(),
+      phone: Joi.string().optional(),
     },
     [Segments.PARAMS]: {
       id: Joi.string().uuid().required(),

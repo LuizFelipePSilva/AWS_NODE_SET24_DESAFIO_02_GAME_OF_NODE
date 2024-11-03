@@ -17,7 +17,6 @@ class DeleteClientService {
   }
   
   public async execute({ id }: IRequest): Promise<void> {
-    const clientRepository = getCustomRepository(ClientRepository);
     const client = await this.clientRepository.findById(id);
 
     if (!client) {

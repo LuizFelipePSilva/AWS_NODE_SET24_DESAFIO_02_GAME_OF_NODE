@@ -11,8 +11,7 @@ class ListClientService {
     private clientRepository: ClientRepository){
   }
   
-  public async execute(): Promise<Client[]> {
-    const clientRepository = getCustomRepository(ClientRepository);
+  public async execute(p0: { page: number; size: number; fullname: string; email: string; excluded: boolean | undefined; orderBy: ("fullname" | "createdAt" | "deletedAt")[] | undefined; }): Promise<Client[]> {
     const clients = await this.clientRepository.find();
     return clients;
   }
