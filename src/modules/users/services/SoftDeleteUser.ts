@@ -2,6 +2,7 @@ import { injectable, inject } from 'tsyringe';
 import { IUserRepository } from '../domain/repositories/IUserRepository';
 import AppError from '@shared/errors/AppError';
 import { IRequestFindUserById } from '../domain/models/IRequestFindUserById';
+import { IUser } from '../domain/models/IUser';
 
 @injectable()
 class SoftDeleteUserService {
@@ -10,15 +11,16 @@ class SoftDeleteUserService {
     private userRepository: IUserRepository
   ) {}
 
-  public async execute({id}: IRequestFindUserById): Promise<void> {
+  public async execute({id}: IRequestFindUserById): Promise<IUser> {
     const user = await this.userRepository.findById(id);
 
     if (!user) {
-      throw new AppError('Usuário não encontrado', 404);
+      throw new AppError('Usuário não encontrado');
     }
 
-    user.deletedAt = new Date();
-    await this.userRepository.save(user);
+    await this.userRepository.delete(id);
+
+    return user;
   }
 }
 

@@ -56,18 +56,18 @@ export default class UserController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const {fullName, email, password}  = request.body;
+    const { fullName, email, password } = request.body;
 
     const createUser = container.resolve(CreateUserService);
 
-    const user = await createUser.execute({fullName, email, password});
+    const user = await createUser.execute({ fullName, email, password });
 
     return response.json(instanceToInstance(user));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
-    const {fullName, email, password} = request.body;
+    const { fullName, email, password } = request.body;
 
     const updateUser = container.resolve(UpdateUserService);
 
@@ -76,12 +76,15 @@ export default class UserController {
       fullName,
       email,
       password,
-    })
+    });
 
-    return response.json(user);
+    return response.json(instanceToInstance(instanceToInstance(user)));
   }
 
-  public async softDelete(request: Request, response: Response): Promise<Response> {
+  public async softDelete(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
     const { id } = request.params;
 
     const softDelete = container.resolve(SoftDeleteUserService);
