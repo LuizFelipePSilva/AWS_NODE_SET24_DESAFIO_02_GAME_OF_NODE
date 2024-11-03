@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import carRoutes from './carRoutes';
+import carRoutes from '@modules/cars/infra/http/routes/Car.routes';
 import orderRoute from '@modules/orders/infra/http/routes/Order.routes'
 import clientRoutes from '@modules/clients/infra/http/routes/Client.routes';
 import userRoutes from '@modules/users/infra/http/routes/User.routes';

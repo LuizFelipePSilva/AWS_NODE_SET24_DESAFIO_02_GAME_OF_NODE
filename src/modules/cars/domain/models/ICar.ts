@@ -1,4 +1,6 @@
+import CarItem from "@modules/cars/infra/typeorm/entities/CarItem";
 import { statusEnum } from "@modules/cars/infra/typeorm/entities/Cars";
+import { Order } from "@modules/orders/infra/typeorm/entities/Order";
 
 export interface ICar {
     id: string;
@@ -11,4 +13,6 @@ export interface ICar {
     status: statusEnum;
     createdAt: Date | null;
     updatedAt: Date | null;
+    items: CarItem[];
+    orders: Order[];
   }

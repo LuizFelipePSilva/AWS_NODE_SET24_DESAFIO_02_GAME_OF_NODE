@@ -1,12 +1,15 @@
 import { inject, injectable } from 'tsyringe';
 import { IOrderRepository } from '../domain/repositories/IOrderRepository';
 import { IOrderPaginate } from '../domain/models/IOrderPaginate';
-import { IShowOrderResponse } from '../domain/models/IShowOrderResponse';
-import { IClientRepository } from '@modules/clients/domain/repositories/IClientRepository';
+import AppError from '@shared/errors/AppError';
 
 interface SearchParams {
   page: number;
   limit: number;
+  status?: string;
+  cpf?: string;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 @injectable()
@@ -14,20 +17,46 @@ class ListOrderService {
   constructor(
     @inject('OrdersRepository')
     private ordersRepository: IOrderRepository,
-    @inject('ClientRepository')
-    private clientRepository: IClientRepository,
   ) {}
 
-  public async execute({ page, limit }: SearchParams): Promise<IOrderPaginate> {
+  public async execute({
+    page,
+    limit,
+    status,
+    cpf,
+    startDate,
+    endDate,
+  }: SearchParams): Promise<IOrderPaginate> {
     const take = limit;
-    const skip = (Number(page) - 1) * take;
+    const skip = (page - 1) * take;
+
+    const filters: any = {
+      ...(status && { status }),
+      ...(cpf && { clientCpf: cpf }),
+      ...(startDate && endDate && { orderDateRange: { start: startDate, end: endDate } }),
+      ...(startDate && !endDate && { orderDate: { $gte: startDate } }),
+      ...(!startDate && endDate && { orderDate: { $lte: endDate } }),
+    };
+
     const orders = await this.ordersRepository.findAll({
       page,
       skip,
       take,
+      order: { orderDate: 'DESC' },
+      filters,
     });
-   
-    return orders;
+
+    if (orders.data.length === 0) {
+      throw new AppError('No orders found.');
+    }
+
+    return {
+      per_page: orders.per_page,
+      data: orders.data,
+      total: orders.total,
+      current_page: orders.current_page,
+      last_page: Math.ceil(orders.total / take),
+    };
   }
 }
 

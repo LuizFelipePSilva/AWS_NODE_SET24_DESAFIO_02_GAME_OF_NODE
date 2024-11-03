@@ -45,7 +45,10 @@ class Cars {
   @CreateDateColumn()
   createdAt: Date | null;
 
-  @OneToMany(() => CarItem, carItem => carItem.cars, { cascade: true })
+  @CreateDateColumn()
+  updatedAt: Date | null;
+
+  @OneToMany(() => CarItem, (carItem) => carItem.cars, { cascade: true })
   items: CarItem[];
 
   @OneToMany(() => Order, (order) => order.car)
