@@ -11,7 +11,7 @@ export class wCreateOrder1730153267365 implements MigrationInterface {
       new Table({
         name: 'orders',
         columns: [
-          { name: 'id', type: 'uuid', isPrimary: true },
+          { name: 'id', type: 'uuid', isPrimary: true, default: 'uuid_generate_v4()'  },
           { name: 'clientId', type: 'uuid', isNullable: false },
           { name: 'clientName', type: 'varchar', isNullable: false },
           { name: 'clientEmail', type: 'varchar', isNullable: false },
