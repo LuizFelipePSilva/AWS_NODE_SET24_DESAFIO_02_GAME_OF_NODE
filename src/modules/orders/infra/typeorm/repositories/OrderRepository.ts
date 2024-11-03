@@ -5,11 +5,17 @@ import { ICreateOrder } from '@modules/orders/domain/models/ICreateOrder';
 import { Order } from '../entities/Order';
 import { IOrderPaginate } from '@modules/orders/domain/models/IOrderPaginate';
 
-type SearchParams = {
+interface SearchParams {
   page: number;
   skip: number;
   take: number;
-};
+  filters?: {
+    status?: string;
+    clientCpf?: string;
+    orderDateRange?: { start: Date; end: Date };
+    orderDate?: { $gte?: Date; $lte?: Date };
+  };
+}
 
 export class OrderRepository implements IOrderRepository {
   private ormRepository: Repository<Order>;
@@ -25,8 +31,8 @@ export class OrderRepository implements IOrderRepository {
   public async findByClient(id: string): Promise<Order | null> {
     return await this.ormRepository.findOne({
       where: {
-        clientId: id
-      }
+        clientId: id,
+      },
     }) || null;
   }
 
@@ -34,21 +40,58 @@ export class OrderRepository implements IOrderRepository {
     page,
     skip,
     take,
+    filters,
   }: SearchParams): Promise<IOrderPaginate> {
-    const [orders, count] = await this.ormRepository
-      .createQueryBuilder()
-      .skip(skip)
-      .take(take)
-      .getManyAndCount();
+    const query = this.ormRepository.createQueryBuilder('orders')
+      .leftJoinAndSelect('orders.client', 'client');
 
-    const result = {
+    if (filters) {
+      if (filters.status) {
+        query.andWhere('orders.status = :status', { status: filters.status });
+      }
+      if (filters.clientCpf) {
+        query.andWhere('client.cpf = :cpf', { cpf: filters.clientCpf });
+      }
+      if (filters.orderDateRange) {
+        query.andWhere('orders.orderDate BETWEEN :start AND :end', {
+          start: filters.orderDateRange.start,
+          end: filters.orderDateRange.end,
+        });
+      }
+      if (filters.orderDate?.$gte) {
+        query.andWhere('orders.orderDate >= :startDate', { startDate: filters.orderDate.$gte });
+      }
+      if (filters.orderDate?.$lte) {
+        query.andWhere('orders.orderDate <= :endDate', { endDate: filters.orderDate.$lte });
+      }
+    }
+
+    // Ordenação DESC para orderDate
+    query.orderBy('orders.orderDate', 'DESC');
+
+    const [orders, count] = await query.skip(skip).take(take).getManyAndCount();
+
+    const formattedOrders = orders.map(order => ({
+      id: order.id,
+      status: order.status,
+      clientId: order.clientId,
+      clientName: order.client.fullName,
+      clientCpf: order.client.cpf,
+      orderDate: order.orderDate,
+      totalValue: order.totalValue,
+      cep: order.cep,
+      city: order.city,
+      uf: order.uf,
+      purchaseDate: order.purchaseDate,
+      cancellationDate: order.cancellationDate,
+    }));
+
+    return {
       per_page: take,
       total: count,
       current_page: page,
-      data: orders,
+      data: formattedOrders,
     };
-
-    return result;
   }
 
   async create(order: ICreateOrder): Promise<IOrder> {
