@@ -61,4 +61,7 @@ export class Order {
   @ManyToOne(() => Car, (car) => car.orders, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'carId' })
   car: Car;
+
+  @CreateDateColumn()
+  deletedAt: Date;
 }
