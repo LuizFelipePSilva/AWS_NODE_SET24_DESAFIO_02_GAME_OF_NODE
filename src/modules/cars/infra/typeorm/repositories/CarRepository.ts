@@ -19,7 +19,7 @@ class CarRepository implements ICarRepository {
   }
 
   public async findById(id: string): Promise<ICar | null> {
-    return (await this.ormRepository.findOne(id)) || null;
+    return (await this.ormRepository.findOne(id, {relations: ['items']})) || null;
   }
 
   public async findByPlate(plate: string): Promise<Car | null> {
