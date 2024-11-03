@@ -74,16 +74,16 @@ export class OrderRepository implements IOrderRepository {
     const formattedOrders = orders.map(order => ({
       id: order.id,
       status: order.status,
-      clientId: order.clientId,
-      clientName: order.client.fullName,
-      clientCpf: order.client.cpf,
       orderDate: order.orderDate,
+      purchaseDate: order.purchaseDate,
+      cancellationDate: order.cancellationDate,
       totalValue: order.totalValue,
       cep: order.cep,
       city: order.city,
       uf: order.uf,
-      purchaseDate: order.purchaseDate,
-      cancellationDate: order.cancellationDate,
+      clientId: order.clientId,
+      clientName: order.client.fullName,
+      clientCpf: order.client.cpf,
     }));
 
     return {
@@ -96,11 +96,13 @@ export class OrderRepository implements IOrderRepository {
 
   async create(order: ICreateOrder): Promise<IOrder> {
     const newOrder = this.ormRepository.create(order);
-    return await this.ormRepository.save(newOrder);
+    await this.ormRepository.save(newOrder);
+    return newOrder
   }
 
   async update(order: Order): Promise<Order> {
-    return await this.ormRepository.save(order);
+    await this.ormRepository.save(order);
+    return order
   }
 
   async delete(id: string): Promise<void> {
