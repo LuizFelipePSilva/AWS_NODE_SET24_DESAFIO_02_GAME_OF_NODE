@@ -5,6 +5,7 @@ import ListUsersService from '@modules/users/services/ShowUsers';
 import CreateUserService from '@modules/users/services/CreateUser';
 import UpdateUserService from '@modules/users/services/UpdateUser';
 import SoftDeleteUserService from '@modules/users/services/SoftDeleteUser';
+import { instanceToInstance } from 'class-transformer';
 
 export default class UserController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -41,7 +42,7 @@ export default class UserController {
       orderBy: orderFields,
     });
 
-    return response.json(users);
+    return response.json(instanceToInstance(users));
   }
 
   public async show(request: Request, response: Response): Promise<Response> {
@@ -51,7 +52,7 @@ export default class UserController {
 
     const user = await userById.execute({ id });
 
-    return response.json(user);
+    return response.json(instanceToInstance(user));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -61,7 +62,7 @@ export default class UserController {
 
     const user = await createUser.execute({fullName, email, password});
 
-    return response.json(user);
+    return response.json(instanceToInstance(user));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
