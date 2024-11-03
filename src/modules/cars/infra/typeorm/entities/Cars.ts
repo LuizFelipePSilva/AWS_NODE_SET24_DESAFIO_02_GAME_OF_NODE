@@ -7,6 +7,7 @@ import {
   
 } from 'typeorm';
 import CarItem from './CarItem';
+<<<<<<< HEAD
 import {ICar} from '@modules/cars/domain/models/ICar'
 import { Order } from '@modules/orders/infra/typeorm/entities/Order';
 
@@ -15,6 +16,9 @@ export enum statusEnum {
   inativo,
   excluido
 }
+=======
+import { Order } from '@modules/orders/infra/typeorm/entities/Order';
+>>>>>>> main
 
 @Entity('cars')
 class Cars {
@@ -45,6 +49,7 @@ class Cars {
   @CreateDateColumn()
   createdAt: Date | null;
 
+<<<<<<< HEAD
   @CreateDateColumn()
   updatedAt: Date | null;
   
@@ -53,6 +58,13 @@ class Cars {
 
   // @OneToMany(() => Order, (order) => order.car)
   // orders: Order[]
+=======
+  @OneToMany(() => CarItem, carItem => carItem.cars, { cascade: true })
+  items: CarItem[];
+
+  @OneToMany(() => Order, (order) => order.car)
+  orders: Order[]
+>>>>>>> main
 }
 
 export default Cars;
