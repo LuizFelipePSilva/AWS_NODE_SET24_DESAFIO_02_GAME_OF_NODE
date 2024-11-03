@@ -13,8 +13,10 @@ export class UserRepository implements IUserRepository {
   }
 
   async create(user: IUser): Promise<IUser> {
+    console.log(user)
     const newUser = this.ormRepository.create(user);
-    return await this.ormRepository.save(newUser);
+    await this.ormRepository.save(newUser);
+    return newUser;
   }
 
   async save(user: IUser): Promise<IUser> {
@@ -26,7 +28,7 @@ export class UserRepository implements IUserRepository {
   }
 
   public async findByEmail(email: string): Promise<IUser | null> {
-    return (await this.ormRepository.findOne(email)) || null;
+    return (await this.ormRepository.findOne({ where: { email } })) || null;
   }
 
   public async findAll(params: IShowUsersParams): Promise<IUserPaginate> {
