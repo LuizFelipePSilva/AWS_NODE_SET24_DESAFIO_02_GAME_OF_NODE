@@ -2,12 +2,16 @@ import { inject, injectable } from "tsyringe";
 import { IUserRepository } from "../domain/repositories/IUserRepository";
 import { IUser } from "../domain/models/IUser";
 import AppError from "@shared/errors/AppError";
+import { IHashProvider } from "../providers/HashProvider/models/IHashProvider";
 
 @injectable()
 class UpdateUserService {
     constructor(
         @inject('UserRepository')
-        private userRepository: IUserRepository,      
+        private userRepository: IUserRepository,
+        
+        @inject('HashProvider')
+        private hashProvider: IHashProvider,
     ) {}
 
     public async execute({id, fullName, email, password}: IRequestUpdateUser): Promise<IUser> {
@@ -32,7 +36,7 @@ class UpdateUserService {
         }
 
         if (password) {
-            user.password = password;
+            user.password = await this.hashProvider.generateHash(password);
         }
 
         return await this.userRepository.save(user)
