@@ -29,6 +29,7 @@ export class wCreateOrder1730153267365 implements MigrationInterface {
           { name: 'carId', type: 'uuid', isNullable: false },
           { name: 'purchaseDate', type: 'timestamp', default: 'now()' },
           { name: 'cancellationDate', type: 'timestamp', isNullable: true },
+          { name: 'deletedAt', type: 'timestamp', isNullable: true}
         ],
       })
     );
