@@ -1,11 +1,14 @@
 import { Router } from "express"; 
+import CarController from "../controllers/CarController";
 
 const carRoute = Router()
 
-carRoute.post('/', )
-carRoute.get('/', )
-carRoute.get('/:id', )
-carRoute.patch('/:id',)
-carRoute.get('/:id', )
+const carController = new CarController()
+
+carRoute.post('/', carController.create)
+carRoute.get('/', carController.index)
+carRoute.get('/:id', carController.findById)
+carRoute.patch('/:id')
+carRoute.delete('/:id',carController.delete)
 
 export default carRoute;

@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
-import Car from '@modules/cars/infra/typeorm/entities/Cars';
+import Car, { statusEnum } from '@modules/cars/infra/typeorm/entities/Cars';
 import { ICarRepository } from '@modules/cars/domain/repositories/ICarRepository';
 import { ICarItemRepository } from '@modules/cars/domain/repositories/ICarItemRepository';
 import { IRequestCreateCar } from '../domain/models/IRequestCreateCar';
@@ -50,7 +50,7 @@ class CreateCarService {
       km,
       year,
       price,
-      status: 'Ativo', // Status padrão
+      status: statusEnum.ativo,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -58,7 +58,7 @@ class CreateCarService {
     // Adicionar os itens do carro
     const carItems = uniqueItems.map(itemName => ({
       name: itemName,
-      car_id: car.id,
+      cars: car,
       createdAt: new Date(),
       updatedAt: new Date(),
     }));
