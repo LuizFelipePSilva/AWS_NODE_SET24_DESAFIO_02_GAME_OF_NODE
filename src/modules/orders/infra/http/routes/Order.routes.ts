@@ -7,7 +7,8 @@ const orderController = new OrdersController();
 const orderRoute = Router();
 
 orderRoute.post(
-  '/',
+  '/', 
+  isAuthenticate,
   celebrate({
     [Segments.BODY]: {
       clientId: Joi.string().required(),
@@ -16,7 +17,6 @@ orderRoute.post(
       value: Joi.number().required(),
     },
   }),
-  isAuthenticate,
   orderController.create
 );
 
@@ -24,17 +24,18 @@ orderRoute.get('/', isAuthenticate, orderController.index);
 
 orderRoute.get(
   '/:id',
+  isAuthenticate,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().uuid().required(),
     },
   }),
-  isAuthenticate,
   orderController.show
 );
 
 orderRoute.patch(
   '/:id',
+  isAuthenticate,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().uuid().required(),
@@ -46,18 +47,17 @@ orderRoute.patch(
       status: Joi.string().valid('Aberto', 'Aprovado', 'Cancelado'),
     },
   }),
-  isAuthenticate,
   orderController.update
 );
 
 orderRoute.delete(
   '/:id',
+  isAuthenticate,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().uuid().required(),
     },
   }),
-  isAuthenticate,
   orderController.softdelete
 );
 
