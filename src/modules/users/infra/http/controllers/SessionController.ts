@@ -1,5 +1,6 @@
 import { ICreateSession } from "@modules/users/domain/models/ICreateSession";
 import CreateSessionService from "@modules/users/services/CreateSession";
+import { instanceToInstance } from "class-transformer";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 
@@ -17,7 +18,7 @@ class SessionController {
           password,
         });
   
-        return response.json({ user, token });
+        return response.json(instanceToInstance({ user, token }));
       } catch (error) {
         const errorMessage = (error as Error).message || 'Erro desconhecido';
         return response.status(401).json({ message: errorMessage });
