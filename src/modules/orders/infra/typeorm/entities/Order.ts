@@ -25,7 +25,7 @@ export class Order {
   @Column()
   clientEmail: string;
 
-  @CreateDateColumn({ name: 'orderDate', type: 'timestamp'})
+  @CreateDateColumn({ name: 'orderDate', type: 'timestamp' })
   orderDate: Date;
 
   @Column({
@@ -34,26 +34,26 @@ export class Order {
   })
   status: 'Aberto' | 'Aprovado' | 'Cancelado';
 
-  @Column({default: null})
+  @Column({ default: null })
   cep: string;
 
-  @Column({default: null})
+  @Column({ default: null })
   city: string;
 
-  @Column({default: null})
+  @Column({ default: null })
   uf: string;
 
-  @Column({ type: 'float', default: 0})
+  @Column({ type: 'float', default: 0 })
   totalValue: number;
 
   @Column({ type: 'uuid' })
   carId: string;
 
-  @Column({ name: 'purchaseDate', type: 'timestamp', default: null})
+  @Column({ name: 'purchaseDate', type: 'timestamp', default: null })
   purchaseDate: Date | null;
 
-  @Column({ type: 'timestamp', nullable: true, default: null})
-  cancellationDate: Date | null ;
+  @Column({ type: 'timestamp', nullable: true, default: null })
+  cancellationDate: Date | null;
 
   @ManyToOne(() => Client, (client) => client.orders, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'clientId' })
@@ -63,6 +63,6 @@ export class Order {
   @JoinColumn({ name: 'carId' })
   car: Car;
 
-  @DeleteDateColumn({default: null})
+  @DeleteDateColumn({ default: null })
   deletedAt: Date;
 }

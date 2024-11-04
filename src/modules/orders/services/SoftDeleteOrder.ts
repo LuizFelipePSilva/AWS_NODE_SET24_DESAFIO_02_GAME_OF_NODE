@@ -8,7 +8,7 @@ import { IOrder } from '../domain/models/IOrder';
 class SoftDeleteOrderService {
   constructor(
     @inject('OrdersRepository')
-    private ordersRepository: IOrderRepository,
+    private ordersRepository: IOrderRepository
   ) {}
 
   public async execute({ id }: IShowOrder): Promise<IOrder> {
@@ -17,9 +17,9 @@ class SoftDeleteOrderService {
     if (!order) {
       throw new AppError('Order not found.');
     }
-    await this.ordersRepository.delete(id)
+    await this.ordersRepository.delete(id);
 
-    return order
+    return order;
   }
 }
 

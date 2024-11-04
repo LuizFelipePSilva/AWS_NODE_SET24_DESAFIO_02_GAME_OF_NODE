@@ -5,7 +5,7 @@ import cors from 'cors';
 import { errors } from 'celebrate';
 import './database/index'; // Importa as configurações de conexão
 import routes from './routes/index.routes'; // Importa as rotas da aplicação
-import '@shared/container'
+import '@shared/container';
 
 const app = express();
 

@@ -12,7 +12,7 @@ class CreateCarService {
     private carRepository: ICarRepository,
 
     @inject('CarItemRepository')
-    private carItemRepository: ICarItemRepository,
+    private carItemRepository: ICarItemRepository
   ) {}
 
   public async execute({
@@ -24,13 +24,13 @@ class CreateCarService {
     items,
     price,
   }: IRequestCreateCar): Promise<Car> {
-   // Validar o ano do carro (não pode ter mais de 11 anos)
+    // Validar o ano do carro (não pode ter mais de 11 anos)
     const currentYear = new Date().getFullYear();
     if (year < currentYear - 11) {
       throw new AppError('O ano do carro não pode ser maior que 11 anos.');
     }
 
-   // Verificar unicidade da placa
+    // Verificar unicidade da placa
     const existingCar = await this.carRepository.findByPlate(plate);
     if (existingCar) {
       throw new AppError('Já existe um carro cadastrado com esta placa.');
@@ -56,7 +56,7 @@ class CreateCarService {
     });
 
     // Adicionar os itens do carro
-    const carItems = uniqueItems.map(itemName => ({
+    const carItems = uniqueItems.map((itemName) => ({
       name: itemName,
       cars: car,
       createdAt: new Date(),
