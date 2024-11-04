@@ -50,10 +50,10 @@ export class Order {
   carId: string;
 
   @Column({ name: 'purchaseDate', type: 'timestamp', default: null})
-  purchaseDate: Date ;
+  purchaseDate: Date | null;
 
   @Column({ type: 'timestamp', nullable: true, default: null})
-  cancellationDate: Date ;
+  cancellationDate: Date | null ;
 
   @ManyToOne(() => Client, (client) => client.orders, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'clientId' })
