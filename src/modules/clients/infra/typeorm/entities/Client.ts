@@ -9,7 +9,7 @@ import { Order } from '@modules/orders/infra/typeorm/entities/Order';
 import { IClient } from '@modules/clients/domain/models/IClient';
 
 @Entity('clients')
-class Client implements IClient{
+class Client implements IClient {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

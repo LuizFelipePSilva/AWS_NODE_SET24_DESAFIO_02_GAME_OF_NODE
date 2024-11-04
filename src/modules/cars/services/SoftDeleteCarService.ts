@@ -8,11 +8,10 @@ import { statusEnum } from '@modules/cars/infra/typeorm/entities/Cars';
 class SoftDeleteCarService {
   constructor(
     @inject('CarRepository')
-    private carRepository: ICarRepository,
+    private carRepository: ICarRepository
   ) {}
 
   public async execute(carId: string): Promise<Car> {
-    
     const car = await this.carRepository.findById(carId);
     if (!car) {
       throw new AppError('Carro não encontrado.', 404);
@@ -27,7 +26,6 @@ class SoftDeleteCarService {
     car.status = statusEnum.excluido;
     car.updatedAt = new Date();
 
-    
     await this.carRepository.softDelete(carId);
 
     return car;

@@ -1,3 +1,3 @@
 export interface IShowCar {
-    id: string;
-  }
+  id: string;
+}

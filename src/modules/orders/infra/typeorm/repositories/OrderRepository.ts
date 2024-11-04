@@ -25,15 +25,17 @@ export class OrderRepository implements IOrderRepository {
   }
 
   public async findById(id: string): Promise<Order | null> {
-    return await this.ormRepository.findOne(id) || null;
+    return (await this.ormRepository.findOne(id)) || null;
   }
 
   public async findByClient(id: string): Promise<Order | null> {
-    return await this.ormRepository.findOne({
-      where: {
-        clientId: id,
-      },
-    }) || null;
+    return (
+      (await this.ormRepository.findOne({
+        where: {
+          clientId: id,
+        },
+      })) || null
+    );
   }
 
   public async findAll({
@@ -42,7 +44,8 @@ export class OrderRepository implements IOrderRepository {
     take,
     filters,
   }: SearchParams): Promise<IOrderPaginate> {
-    const query = this.ormRepository.createQueryBuilder('orders')
+    const query = this.ormRepository
+      .createQueryBuilder('orders')
       .leftJoinAndSelect('orders.client', 'client');
 
     if (filters) {
@@ -59,10 +62,14 @@ export class OrderRepository implements IOrderRepository {
         });
       }
       if (filters.orderDate?.$gte) {
-        query.andWhere('orders.orderDate >= :startDate', { startDate: filters.orderDate.$gte });
+        query.andWhere('orders.orderDate >= :startDate', {
+          startDate: filters.orderDate.$gte,
+        });
       }
       if (filters.orderDate?.$lte) {
-        query.andWhere('orders.orderDate <= :endDate', { endDate: filters.orderDate.$lte });
+        query.andWhere('orders.orderDate <= :endDate', {
+          endDate: filters.orderDate.$lte,
+        });
       }
     }
 
@@ -71,7 +78,7 @@ export class OrderRepository implements IOrderRepository {
 
     const [orders, count] = await query.skip(skip).take(take).getManyAndCount();
 
-    const formattedOrders = orders.map(order => ({
+    const formattedOrders = orders.map((order) => ({
       id: order.id,
       status: order.status,
       orderDate: order.orderDate,
@@ -97,12 +104,12 @@ export class OrderRepository implements IOrderRepository {
   async create(order: ICreateOrder): Promise<IOrder> {
     const newOrder = this.ormRepository.create(order);
     await this.ormRepository.save(newOrder);
-    return newOrder
+    return newOrder;
   }
 
   async update(order: Order): Promise<Order> {
     await this.ormRepository.save(order);
-    return order
+    return order;
   }
 
   async delete(id: string): Promise<void> {

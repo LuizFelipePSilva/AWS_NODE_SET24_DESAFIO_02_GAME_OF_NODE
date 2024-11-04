@@ -13,7 +13,7 @@ class UpdateCarService {
     private carRepository: ICarRepository,
 
     @inject('CarItemRepository')
-    private carItemRepository: ICarItemRepository,
+    private carItemRepository: ICarItemRepository
   ) {}
 
   public async execute({
@@ -35,7 +35,9 @@ class UpdateCarService {
 
     // Impede a atualização de carros com status "Excluído"
     if (car.status == statusEnum.excluido) {
-      throw new AppError('Não é possível atualizar um carro com status "Excluido".');
+      throw new AppError(
+        'Não é possível atualizar um carro com status "Excluido".'
+      );
     }
 
     // Atualiza os campos permitidos
@@ -48,10 +50,8 @@ class UpdateCarService {
 
     // Atualiza o status, se for válido (Ativo ou Inativo)
     if (status && ['Ativo', 'Inativo'].includes(status)) {
-        if(status === 'Ativo')
-            car.status = 0;
-        else if(status === 'Inativo')
-            car.status = 1;
+      if (status === 'Ativo') car.status = 0;
+      else if (status === 'Inativo') car.status = 1;
     }
 
     // Atualiza os itens do carro, se fornecidos

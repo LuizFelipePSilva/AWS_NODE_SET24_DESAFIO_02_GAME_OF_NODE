@@ -10,12 +10,11 @@ interface IRequest {
 
 @injectable()
 class DeleteClientService {
-
   constructor(
     @inject('ClientRepository')
-    private clientRepository: IClientRepository){
-  }
-  
+    private clientRepository: IClientRepository
+  ) {}
+
   public async execute({ id }: IRequest): Promise<void> {
     const client = await this.clientRepository.findById(id);
 
@@ -24,8 +23,8 @@ class DeleteClientService {
     }
 
     client.deletedAt = new Date();
-    await this.clientRepository.save(client)
+    await this.clientRepository.save(client);
   }
 }
 
-export default DeleteClientService
+export default DeleteClientService;

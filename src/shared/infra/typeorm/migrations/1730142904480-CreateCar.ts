@@ -12,7 +12,12 @@ export class CreateCar1730142904480 implements MigrationInterface {
       new Table({
         name: 'cars',
         columns: [
-          { name: 'id', type: 'uuid', isPrimary: true, default: 'uuid_generate_v4()'  },
+          {
+            name: 'id',
+            type: 'uuid',
+            isPrimary: true,
+            default: 'uuid_generate_v4()',
+          },
           { name: 'plate', type: 'varchar', isUnique: true, isNullable: false },
           { name: 'brand', type: 'varchar', isNullable: false },
           { name: 'model', type: 'varchar', isNullable: false },

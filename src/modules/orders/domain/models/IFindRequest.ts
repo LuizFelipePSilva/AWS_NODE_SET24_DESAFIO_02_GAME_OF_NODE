@@ -1,5 +1,5 @@
 export interface IFindRequest {
-  id: string,
+  id: string;
   clientId: string;
   clientName: string;
   clientCpf: string;

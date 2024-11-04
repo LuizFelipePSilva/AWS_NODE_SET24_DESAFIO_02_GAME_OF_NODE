@@ -30,7 +30,7 @@ interface IResponse {
 class ListCarsService {
   constructor(
     @inject('CarRepository')
-    private carRepository: ICarRepository,
+    private carRepository: ICarRepository
   ) {}
 
   public async execute({

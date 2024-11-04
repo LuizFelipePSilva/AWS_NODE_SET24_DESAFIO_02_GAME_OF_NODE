@@ -4,16 +4,15 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   CreateDateColumn,
-  
 } from 'typeorm';
 import CarItem from './CarItem';
-import {ICar} from '@modules/cars/domain/models/ICar'
+import { ICar } from '@modules/cars/domain/models/ICar';
 import { Order } from '@modules/orders/infra/typeorm/entities/Order';
 
 export enum statusEnum {
   ativo,
   inativo,
-  excluido
+  excluido,
 }
 
 @Entity('cars')
@@ -39,7 +38,7 @@ class Cars {
   @Column()
   price: number;
 
-  @Column({ type: 'enum', enum: statusEnum})
+  @Column({ type: 'enum', enum: statusEnum })
   status: statusEnum;
 
   @CreateDateColumn()
@@ -52,7 +51,7 @@ class Cars {
   items: CarItem[];
 
   @OneToMany(() => Order, (order) => order.car)
-  orders: Order[]
+  orders: Order[];
 }
 
 export default Cars;

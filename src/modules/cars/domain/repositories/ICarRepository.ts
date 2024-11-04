@@ -31,5 +31,7 @@ export interface ICarRepository {
   create(car: ICreateCar): Promise<ICar>;
   update(car: ICar): Promise<ICar>;
   softDelete(id: string): Promise<void>;
-  findAllWithFilters(params: IFindAllWithFiltersParams): Promise<IFindAllWithFiltersResponse>;
+  findAllWithFilters(
+    params: IFindAllWithFiltersParams
+  ): Promise<IFindAllWithFiltersResponse>;
 }

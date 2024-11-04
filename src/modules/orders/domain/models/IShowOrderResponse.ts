@@ -1,6 +1,6 @@
-import { IOrder } from "./IOrder";
-import { IClient } from "@modules/clients/domain/models/IClient";
-import { ICar } from "@modules/cars/domain/models/ICar";
+import { IOrder } from './IOrder';
+import { IClient } from '@modules/clients/domain/models/IClient';
+import { ICar } from '@modules/cars/domain/models/ICar';
 
 export interface IShowOrderResponse {
   order: {
@@ -33,6 +33,6 @@ export interface IShowOrderResponse {
     year: number; // Ano do carro
     items: Array<{
       name: string; // Nome do item
-    }>; 
+    }>;
   };
 }

@@ -10,11 +10,10 @@ interface IRequest {
 
 @injectable()
 class ShowClientService {
-
   constructor(
     @inject('ClientRepository')
-    private clientRepository: ClientRepository){
-  }
+    private clientRepository: ClientRepository
+  ) {}
 
   public async execute({ id }: IRequest): Promise<Client> {
     const client = await this.clientRepository.findById(id);
@@ -27,4 +26,4 @@ class ShowClientService {
   }
 }
 
-export default ShowClientService
+export default ShowClientService;
