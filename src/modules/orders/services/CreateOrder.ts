@@ -10,7 +10,7 @@ import axios from 'axios';
 @injectable()
 class CreateOrderService {
   constructor(
-    @inject('OrderRepository')
+    @inject('OrdersRepository')
     private ordersRepository: IOrderRepository,
 
     @inject('ClientRepository')
@@ -33,12 +33,6 @@ class CreateOrderService {
     const orderIsOpen = await this.ordersRepository.findByClient(clientId)
 
     const verifyClientOrder = orderIsOpen?.status === 'Aberto'
-
-    const clients =  {
-      email: clientExists.email,
-      name: clientExists.fullName,
-    }
-   
 
     if ((verifyClientOrder)) {
       throw new AppError('Cliente tem um pedido em aberto');
@@ -74,9 +68,9 @@ class CreateOrderService {
 
 
     const order = await this.ordersRepository.create({
-      clientId: clientId,
-      clientEmail: clients.email,
-      clientName: clients.name,
+      clientId: clientExists.id,
+      clientEmail: clientExists.email,
+      clientName: clientExists.fullName,
       orderDate: new Date(),
       cep: cep,
       city: cepInfo.city,
@@ -87,6 +81,7 @@ class CreateOrderService {
       status: 'Aberto',
       cancellationDate: null,
     })
+
     return order
   }
 }

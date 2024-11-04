@@ -60,18 +60,21 @@ class UpdateOrderService {
         if (order.status !== 'Aberto') {
           throw new AppError('Apenas pedidos abertos podem ser aprovados.');
         }
-        if (!order.clientId || !order.carId || !order.orderDate || !order.purchaseDate || !order.cep) {
-          throw new AppError('Todos os campos devem estar preenchidos para aprovar o pedido.');
+        else {
+          order.purchaseDate = new Date()
         }
+
       } else if (status === 'Cancelado') {
         if (order.status !== 'Aberto') {
           throw new AppError('Apenas pedidos abertos podem ser cancelados.');
         }
-        order.cancellationDate = new Date();
+        else {
+          order.cancellationDate = new Date();
+        }
+        
       }
       order.status = status;
     }
-    Object.assign(order, { orderDate, purchaseDate });
 
     await this.ordersRepository.update(order);
 

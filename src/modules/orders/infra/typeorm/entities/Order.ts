@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import Client from '@modules/clients/infra/typeorm/entities/Client';
 import Car from '@modules/cars/infra/typeorm/entities/Cars';
@@ -48,11 +49,11 @@ export class Order {
   @Column({ type: 'uuid' })
   carId: string;
 
-  @CreateDateColumn({ name: 'purchaseDate', type: 'timestamp', default: null})
+  @Column({ name: 'purchaseDate', type: 'timestamp', default: null})
   purchaseDate: Date | null;
 
   @Column({ type: 'timestamp', nullable: true, default: null})
-  cancellationDate: Date | null;
+  cancellationDate: Date | null ;
 
   @ManyToOne(() => Client, (client) => client.orders, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'clientId' })
@@ -62,6 +63,6 @@ export class Order {
   @JoinColumn({ name: 'carId' })
   car: Car;
 
-  @CreateDateColumn()
+  @DeleteDateColumn({default: null})
   deletedAt: Date;
 }
