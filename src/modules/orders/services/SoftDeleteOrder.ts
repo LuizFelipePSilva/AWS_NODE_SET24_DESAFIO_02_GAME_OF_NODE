@@ -11,7 +11,7 @@ class SoftDeleteOrderService {
     private ordersRepository: IOrderRepository
   ) {}
 
-  public async execute({ id }: IShowOrder): Promise<IOrder> {
+  public async execute({ id }: IShowOrder): Promise<any> {
     const order = await this.ordersRepository.findById(id);
 
     if (!order) {
@@ -19,7 +19,7 @@ class SoftDeleteOrderService {
     }
     await this.ordersRepository.delete(id);
 
-    return order;
+    return "";
   }
 }
 
