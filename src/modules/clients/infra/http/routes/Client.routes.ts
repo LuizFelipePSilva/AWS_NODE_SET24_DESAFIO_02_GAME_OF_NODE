@@ -39,10 +39,10 @@ clientRoutes.patch(
   '/:id',
   celebrate({
     [Segments.BODY]: {
-      fullName: Joi.string().required(),
-      birthDate: Joi.date().required(),
-      cpf: Joi.string().length(11).required(),
-      email: Joi.string().email().required(),
+      fullName: Joi.string().optional(),
+      birthDate: Joi.date().optional(),
+      cpf: Joi.string().length(11).optional(),
+      email: Joi.string().email().optional(),
       phone: Joi.string().optional(),
     },
     [Segments.PARAMS]: {
