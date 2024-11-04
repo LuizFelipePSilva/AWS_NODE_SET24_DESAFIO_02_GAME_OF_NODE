@@ -1,0 +1,1094 @@
+openapi: 3.0.3
+info:
+  title: Compass Cars 0.1
+  description: |-
+   Esta documentação foi elaborada para a API de um sistema de gerenciamento de carros, que permite a criação e administração de usuários com o intuito de facilitar a gestão de clientes, veículos e pedido de compra. Na API, é possível criar usuários administradores responsáveis pelo controle de todas as operações do sistema. Estes administradores podem registrar novos clientes, gerenciar o catálogo de carros e adicionar novos pedidos de serviço conforme necessário.
+   
+   A estrutura da API inclui endpoints para gerenciar cada uma dessas entidades:
+
+   - Usuários: permitem a criação e autenticação de administradores, com segurança implementada para proteger os dados de acesso.
+   - Clientes: os administradores podem cadastrar e gerenciar os dados dos clientes, possibilitando um controle detalhado sobre quem utiliza o serviço.
+   - Carros: permite o cadastro e atualização das informações dos veículos, como modelo, marca, ano e outras características essenciais.
+   - Pedidos: possibilita a criação de pedidos de compra de veiculos.
+    
+    Essa documentação visa garantir que todos os administradores consigam utilizar a API de forma consistente e eficiente, seguindo padrões claros para cada operação, o que inclui parâmetros obrigatórios, estrutura de requisições e respostas, além de exemplos de uso.
+
+    
+  version: 0.0.1
+  
+externalDocs:
+  description: Repositório da aplicação no GitHub
+  url: https://github.com/LuizFelipePSilva/AWS_NODE_SET24_DESAFIO_02_GAME_OF_NODE
+servers:
+  - url: http://localhost:3333/api
+  
+tags:
+  - name: Session
+    description: Operaçãoes de Auteticação
+  - name: User
+    description: Operações de Usuário
+  - name: Cliente
+    description: Operações de Cliente
+  - name: Car
+    description: Operações de Carros
+  - name: Orders
+    description: Operações de Pedidos
+paths:
+  /session:
+    post:
+      tags:
+        - Session
+      summary: Logar no sistema
+      description: Inserindo email e senha para entrar no sistema
+      operationId: createSession
+      requestBody:
+        description: Exemplo
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionRequest'
+        required: true
+      responses:
+        '200':
+          description: Usuário cadastrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+          
+  /users:
+    post:
+      tags:
+        - User
+      summary: Casdastrando um novo usuário
+      description: Casdastrando um novo usuário
+      operationId: create
+      requestBody:
+        description: Exemplo
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        '200':
+          description: Usuário cadastrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+    get:
+      tags:
+        - User
+      summary: Lista dos usuários
+      description: Listando todos os usuários do sistema
+      parameters:
+        - name: orderBy
+          in: query
+          description: "Campos para ordenar (Ex: 'name,email,deletedAt')"
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: "Número da página para paginação"
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: size
+          in: query
+          description: "Número de usuários por página"
+          required: false
+          schema:
+            type: integer
+            default: 10
+      operationId: index
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de usuários
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersResponse'
+  /users/{id}:
+    get:
+      tags:
+        - User
+      summary: Encontrar usuário por id
+      description: Retorna um único usuário
+      operationId: findUserById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    patch:
+      summary: Atualiza as informações do usuário
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do usuário a ser atualizado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Dados atualizados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Requisição inválida
+        '404':
+          description: Usuário não encontrado
+    delete:
+      summary: Exclui um usuário
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do usuário a ser excluído
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Usuário excluído com sucesso
+        '404':
+          description: Usuário não encontrado
+        '500':
+          description: Erro interno do servidor
+          
+  /client:
+    post:
+      summary: Criação de um novo cliente
+      tags:
+        - Cliente
+      description: Cria um novo cliente com validação de CPF e verificações de unicidade.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullName:
+                  type: string
+                  example: "João Silva"
+                birthDate:
+                  type: string
+                  format: date
+                  example: "1985-10-21"
+                cpf:
+                  type: string
+                  example: "123.456.789-09"
+                email:
+                  type: string
+                  format: email
+                  example: "joao.silva@example.com"
+                phone:
+                  type: string
+                  example: "+5511999999999"
+              required:
+                - fullName
+                - birthDate
+                - cpf
+                - email
+                - phone
+      responses:
+        "201":
+          description: Cliente criado com sucesso.
+        "400":
+          description: Erro de validação dos dados.
+        "409":
+          description: Cliente com CPF ou e-mail já cadastrado.
+    get:
+      summary: Listagem de clientes
+      tags:
+        - Cliente
+      description: Lista todos os clientes, com opções de filtro, ordenação e paginação.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: nome
+          schema:
+            type: string
+          description: Parte do nome do cliente
+        - in: query
+          name: email
+          schema:
+            type: string
+          description: Parte do e-mail do cliente
+        - in: query
+          name: cpf
+          schema:
+            type: string
+          description: CPF do cliente
+        - in: query
+          name: excluido
+          schema:
+            type: boolean
+          description: Filtra clientes excluídos (sim ou não)
+        - in: query
+          name: ordenar
+          schema:
+            type: string
+          description: Campo de ordenação
+        - in: query
+          name: pagina
+          schema:
+            type: integer
+          description: Número da página
+        - in: query
+          name: tamanhoPagina
+          schema:
+            type: integer
+          description: Número de clientes por página
+      responses:
+        "200":
+          description: Lista de clientes.
+        "404":
+          description: Nenhum resultado encontrado.      
+  /clients/{id}:
+    get:
+      tags:
+        - Cliente
+      summary: Encontrar cliente por id
+      description: Retorna um único cliente
+      operationId: findClientById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+    patch:
+      summary: Atualização de informações do cliente
+      tags:
+        - Cliente
+      description: Atualiza as informações de um cliente, exceto ID, data de cadastro e data de exclusão.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do cliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullName:
+                  type: string
+                birthDate:
+                  type: string
+                  format: date
+                cpf:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+      responses:
+        "200":
+          description: Cliente atualizado com sucesso.
+        "404":
+          description: Cliente não encontrado.
+    delete:
+      summary: Exclusão de cliente
+      tags:
+        - Cliente
+      description: Realiza o soft delete do cliente, marcando a data de exclusão.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do cliente
+      responses:
+        "204":
+          description: Cliente excluído com sucesso.
+        "404":
+          description: Cliente não encontrado.
+          
+  /cars:
+    get:
+      summary: Listar carros com filtros opcionais
+      description: Permite listar carros com filtros por marca, modelo, status e ano.
+      tags:
+        - Car
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: mark
+          schema:
+            type: string
+          description: Marca do carro
+        - in: query
+          name: model
+          schema:
+            type: string
+          description: Modelo do carro
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: ["Ativo", "Inativo", "Excluido"]
+          description: Status do carro
+        - in: query
+          name: year
+          schema:
+            type: integer
+          description: Ano de fabricação do carro
+      responses:
+        '200':
+          description: Lista de carros
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Criar um novo carro
+      description: Cadastra um novo carro no sistema.
+      tags:
+        - Car
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarRequest'
+      responses:
+        '201':
+          description: Carro criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /cars/{id}:
+    get:
+      summary: Obter informações de um carro
+      description: Retorna os detalhes de um carro específico, incluindo seus itens, usando o ID do carro.
+      tags:
+        - Car
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do carro a ser consultado
+      responses:
+        '200':
+          description: Carro encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        '404':
+          description: Carro não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      summary: Atualizar informações de um carro
+      description: Atualiza as informações de um carro existente. Somente campos opcionais podem ser alterados, exceto o ID.
+      tags:
+        - Car
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do carro a ser atualizado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarUpdateRequest'
+      responses:
+        '200':
+          description: Carro atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        '400':
+          description: Requisição inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Carro não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletar um carro
+      description: Remove um carro do sistema pelo ID.
+      tags:
+        - Car
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do carro a ser deletado
+      responses:
+        '204':
+          description: Carro deletado com sucesso
+        '404':
+          description: Carro não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /orders:
+    post:
+      summary: Criação de um novo pedido
+      description: Endpoint para criar um pedido com cliente, carro, CEP e valor.
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+             schema:
+              $ref: '#/components/schemas/OrderRequest'
+      responses:
+        201:
+          description: Pedido criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        400:
+          description: Erro de validação nos dados do pedido
+        401:
+          description: Não autorizado, token ausente ou inválido
+    get:
+      summary: Listar pedidos com filtros e paginação
+      description: Retorna uma lista de pedidos com filtros opcionais para status, cpf, intervalo de datas, e ordenação.
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []  # Autenticação via Bearer token
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Número da página (inicia em 1)
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+          description: Quantidade de itens por página
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - Aberto
+              - Aprovado
+              - Cancelado
+          description: Filtro pelo status do pedido (opcional)
+        - in: query
+          name: cpf
+          schema:
+            type: string
+          description: Filtro pelo CPF do cliente (opcional)
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date
+          description: Data de início para o filtro de intervalo de datas (opcional)
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date
+          description: Data de término para o filtro de intervalo de datas (opcional)
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+            default: DESC
+          description: Ordenação dos resultados (ASC para ascendente, DESC para descendente)
+      responses:
+        200:
+          description: Lista de pedidos filtrados com paginação
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quant_pages:
+                    type: integer
+                    description: Quantidade total de páginas
+                    example: 5
+                  totalOrders:
+                    type: integer
+                    description: Total de pedidos encontrados
+                    example: 50
+                  current_page:
+                    type: integer
+                    description: Página atual
+                    example: 1
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+        401:
+          description: Não autorizado, token ausente ou inválido
+        400:
+          description: Erro de validação dos parâmetros da consulta
+  /orders/{id}:
+    get:
+      summary: Obter detalhes de um pedido específico
+      description: Retorna os detalhes de um pedido com base no seu ID.
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []  # Autenticação via Bearer token
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do pedido
+      responses:
+        200:
+          description: Detalhes do pedido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'  # Referencia o schema 'Order'
+        404:
+          description: Pedido não encontrado
+        401:
+          description: Não autorizado, token ausente ou inválido
+    patch:
+      summary: Atualizar um pedido
+      description: Atualiza os detalhes de um pedido específico com base no ID fornecido.
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []  # Autenticação via Bearer token
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do pedido
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderDate:
+                  type: string
+                  format: date
+                  description: Data do pedido
+                  example: "2024-11-04"
+                purchaseDate:
+                  type: string
+                  format: date
+                  description: Data de compra
+                  example: "2024-11-05"
+                cep:
+                  type: string
+                  description: CEP do pedido
+                  example: "12345-678"
+                status:
+                  type: string
+                  description: Status do pedido
+                  enum: 
+                    - Aberto
+                    - Aprovado
+                    - Cancelado
+                  example: "Aprovado"
+      responses:
+        200:
+          description: Pedido atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'  # Referencia o schema 'Order' já criado
+        400:
+          description: Dados de entrada inválidos
+        404:
+          description: Pedido não encontrado
+        401:
+          description: Não autorizado, token ausente ou inválido
+    delete:
+      summary: Deletar (soft delete) um pedido
+      description: Marca um pedido como deletado sem removê-lo permanentemente.
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []  # Autenticação via Bearer token
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do pedido a ser deletado
+      responses:
+        204:
+          description: Pedido deletado com sucesso (soft delete)
+        400:
+          description: Dados de entrada inválidos
+        404:
+          description: Pedido não encontrado
+        401:
+          description: Não autorizado, token ausente ou inválido
+  
+components:
+  schemas:
+    SessionRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: carlosemanual@gmail.com
+        password:
+          type: string
+          example: 1234567
+      xml:
+        name: user
+    SessionResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzA3MzY4MzcsImV4cCI6MTczMDczNzQzNywic3ViIjoiNWEyMTBjODYtZmM0Yy00NjE4LWI2MzctNDg2YWNlZWY0ZjgxIn0.TPcmoGDDjbA2nIqRp54BdVz7XLLwq_c8UM15kaK7wUA
+          description: "Token de autenticação JWT"
+          
+    UserRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+          example: João Carlos Moreira
+        email:
+          type: string
+          example: joaocarlos@gmail.com
+        password:
+          type: string
+          example: 1234567
+      xml:
+        name: user
+    GetUsersResponse:
+      type: object
+      properties:
+        quant_pages:
+          type: integer
+          example: 1
+        totalUsers:
+          type: integer
+          example: 3
+        current_page:
+          type: integer
+          example: 1
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: int64
+          example: 58cfd5a1-b707-4f9f-b25a-a656e0164f68
+        fullName:
+          type: string
+          example: João Carlos Moreira
+        email:
+          type: string
+          example: joaocarlos@gmail.com
+        creatAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: null
+      xml:
+        name: user
+    UpdateUserRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: Nome completo do usuário
+          example: "Novo Nome Completo"
+        email:
+          type: string
+          description: Novo e-mail do usuário
+          format: email
+          example: "novousuario@example.com"
+        password:
+          type: string
+          description: Nova senha do usuário
+          minLength: 6
+          example: "1234567"
+          
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID do cliente
+        fullName:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        cpf:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - fullName
+        - birthDate
+        - cpf
+        - email
+    
+    CarRequest:
+      type: object
+      properties:
+        plate:
+          type: string
+          example: "XYZ-1234"
+        mark:
+          type: string
+          example: "Toyota"
+        model:
+          type: string
+          example: "Corolla"
+        km:
+          type: number
+          example: 50000
+        year:
+          type: integer
+          example: 2020
+        price:
+          type: number
+          example: 35000.00
+        status:
+          type: string
+          enum: ["Ativo", "Inativo"]
+          example: "Ativo"
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Airbag"
+    CarUpdateRequest:
+      type: object
+      properties:
+        mark:
+          type: string
+          example: "Honda"
+        model:
+          type: string
+          example: "Civic"
+        km:
+          type: number
+          example: 30000
+        year:
+          type: integer
+          example: 2021
+        price:
+          type: number
+          example: 40000.00
+        status:
+          type: string
+          enum: ["Ativo", "Inativo"]
+          example: "Inativo"
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "GPS"
+    Car:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        plate:
+          type: string
+          example: "XYZ-1234"
+        mark:
+          type: string
+          example: "Toyota"
+        model:
+          type: string
+          example: "Corolla"
+        km:
+          type: number
+          example: 50000
+        year:
+          type: integer
+          example: 2020
+        price:
+          type: number
+          example: 35000.00
+        status:
+          type: string
+          enum: ["Ativo", "Inativo"]
+          example: "Ativo"
+        items:
+          type: array
+          items:
+            type: string
+            example: "Airbag"
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: "Carro não encontrado"
+          
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID do pedido
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        clientId:
+          type: string
+          format: uuid
+          description: ID do cliente
+        carId:
+          type: string
+          format: uuid
+          description: ID do carro
+        status:
+          type: string
+          description: Status do pedido
+          example: "Aprovado"
+        createdAt:
+          type: string
+          format: date-time
+          description: Data de criação do pedido
+        updatedAt:
+          type: string
+          format: date-time
+          description: Data de atualização do pedido
+    OrderRequest:
+      type: object
+      properties:
+        clientId:
+          type: string
+          format: uuid
+          description: ID do cliente
+          example: "f8c614bb-0a74-4b34-9ddc-4f1c1a3a6ae8"
+        carId:
+          type: string
+          format: uuid
+          description: ID do carro
+          example: "d1c609d8-5a47-11ec-bf63-0242ac130002"
+        cep:
+          type: string
+          description: CEP do cliente
+          example: "12345-678"
+        value:
+          type: number
+          description: Valor do pedido
+          example: 1500.00
+    OrderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID do pedido criado
+          example: "a4f45b70-1234-11ec-82a8-0242ac130003"
+        clientId:
+          type: string
+          format: uuid
+          description: ID do cliente
+        carId:
+          type: string
+          format: uuid
+          description: ID do carro
+        cep:
+          type: string
+          description: CEP do cliente
+        value:
+          type: number
+          description: Valor do pedido
+        createdAt:
+          type: string
+          format: date-time
+          description: Data de criação do pedido
+    
+  securitySchemes:
+    bearerAuth:   
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  
