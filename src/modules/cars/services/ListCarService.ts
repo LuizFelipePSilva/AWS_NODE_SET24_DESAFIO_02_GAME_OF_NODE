@@ -1,18 +1,36 @@
 import { inject, injectable } from 'tsyringe';
 import { ICarRepository } from '@modules/cars/domain/repositories/ICarRepository';
 import { ICar } from '@modules/cars/domain/models/ICar';
-import { ICarItemRepository } from '../domain/repositories/ICarItemRepository';
-import { IResponseCar } from '@modules/cars/domain/models/IResponseCar';
-import { IRequestCar } from '@modules/cars/domain/models/IRequestCar';
+
+interface IRequest {
+  status?: 'Ativo' | 'Inativo';
+  plateEnd?: string;
+  mark?: string;
+  model?: string;
+  items?: string[];
+  maxKm?: number;
+  yearFrom?: number;
+  yearTo?: number;
+  priceMin?: number;
+  priceMax?: number;
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
+  page: number;
+  limit: number;
+}
+
+interface IResponse {
+  data: ICar[];
+  total: number;
+  page: number;
+  limit: number;
+}
 
 @injectable()
 class ListCarsService {
   constructor(
     @inject('CarRepository')
     private carRepository: ICarRepository,
-
-    // @inject('CarItemRepository')
-    // private carItemRepository: ICarItemRepository,
   ) {}
 
   public async execute({
@@ -26,9 +44,11 @@ class ListCarsService {
     yearTo,
     priceMin,
     priceMax,
+    sortField,
+    sortOrder,
     page,
     limit,
-  }: IRequestCar): Promise<IResponseCar> {
+  }: IRequest): Promise<IResponse> {
     const cars = await this.carRepository.findAllWithFilters({
       status,
       plateEnd,
@@ -40,6 +60,8 @@ class ListCarsService {
       yearTo,
       priceMin,
       priceMax,
+      sortField,
+      sortOrder,
       page,
       limit,
     });

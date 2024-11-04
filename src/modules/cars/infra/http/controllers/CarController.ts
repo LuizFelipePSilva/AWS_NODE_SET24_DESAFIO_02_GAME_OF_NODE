@@ -4,7 +4,9 @@ import CreateCarService from '@modules/cars/services/CreateCarService';
 import SoftDeleteCarService from '@modules/cars/services/SoftDeleteCarService';
 import ListCarService from '@modules/cars/services/ListCarService';
 import ShowCarService from '@modules/cars/services/ShowCarService';
+import UpdateCarService from '@modules/cars/services/UpdateCarService';
 import AppError from '@shared/errors/AppError';
+import { statusEnum } from '../../typeorm/entities/Cars';
 
 export default class CarController {
 
@@ -82,7 +84,7 @@ export default class CarController {
     }
   }
 
-  public async delete(request: Request, response: Response): Promise<Response> {
+  public async softDelete(request: Request, response: Response): Promise<Response> {
 
     const { id } = request.params;
 
@@ -92,11 +94,38 @@ export default class CarController {
 
       const car = await softDeleteCarService.execute(id);
 
-      return response.send(car);
+      return response.json(car);
       
     }catch(error){
-      return response.send(error);
+      return response.json(error);
     }
+  }
+
+  public async update(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+    const { plate, mark, model, km, year, items, price, status } = request.body;
+
+    const updateCarService = container.resolve(UpdateCarService);
+
+    // Verifica se o status é válido
+    if (status && !['Ativo', 'Inativo'].includes(status)) {
+      throw new AppError('Status inválido. O status só pode ser alterado para "Ativo" ou "Inativo".');
+    }
+
+    // Atualiza o carro
+    const updatedCar = await updateCarService.execute({
+      id,
+      plate,
+      mark,
+      model,
+      km,
+      year,
+      items,
+      price,
+      status,
+    });
+
+    return response.json(updatedCar);
   }
 
 }

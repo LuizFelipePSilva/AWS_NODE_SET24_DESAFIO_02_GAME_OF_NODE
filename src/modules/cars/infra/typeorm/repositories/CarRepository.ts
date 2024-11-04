@@ -40,6 +40,7 @@ class CarRepository implements ICarRepository {
     }
 
     car.status = statusEnum.excluido;
+    car.updatedAt = new Date();
     await this.ormRepository.save(car);
   }
 
@@ -54,6 +55,8 @@ class CarRepository implements ICarRepository {
     yearTo,
     priceMin,
     priceMax,
+    sortField = 'price',
+    sortOrder = 'asc',
     page,
     limit,
   }: IFindAllWithFiltersParams): Promise<IFindAllWithFiltersResponse> {
@@ -72,6 +75,9 @@ class CarRepository implements ICarRepository {
     if (yearTo !== undefined) query.andWhere('car.year <= :yearTo', { yearTo });
     if (priceMin !== undefined) query.andWhere('car.price >= :priceMin', { priceMin });
     if (priceMax !== undefined) query.andWhere('car.price <= :priceMax', { priceMax });
+
+    // Ordenação
+    query.orderBy(`car.${sortField}`, sortOrder.toUpperCase() as 'ASC' | 'DESC');
 
     // Paginação
     const total = await query.getCount();
