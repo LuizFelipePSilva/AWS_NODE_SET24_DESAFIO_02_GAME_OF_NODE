@@ -14,7 +14,7 @@ class ShowOrderService {
     @inject('ClientRepository')
     private clientRepository: IClientRepository,
     @inject('CarRepository')
-    private carsRepository: ICarRepository,
+    private carsRepository: ICarRepository
   ) {}
 
   public async execute({ id }: IShowOrder): Promise<IShowOrderResponse> {
@@ -23,7 +23,7 @@ class ShowOrderService {
     if (!order) {
       throw new AppError('Order not found.');
     }
-    
+
     const { clientId, carId } = order;
     const clientExist = await this.clientRepository.findById(clientId);
     const carExist = await this.carsRepository.findById(carId);
@@ -65,7 +65,7 @@ class ShowOrderService {
         model: carExist.model,
         km: carExist.km,
         year: carExist.year,
-        items: carExist.items.map(item => ({ name: item.name })), // Adapta os itens do carro
+        items: carExist.items.map((item) => ({ name: item.name })), // Adapta os itens do carro
       },
     };
   }

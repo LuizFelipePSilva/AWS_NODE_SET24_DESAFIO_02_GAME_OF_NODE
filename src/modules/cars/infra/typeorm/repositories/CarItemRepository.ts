@@ -4,13 +4,12 @@ import { ICarItem } from '@modules/cars/domain/models/ICarItem';
 import { ICarItemRepository } from '@modules/cars/domain/repositories/ICarItemRepository';
 
 class CarItemRepository implements ICarItemRepository {
-  
   private ormRepository: Repository<CarItem>;
 
   constructor() {
     this.ormRepository = getRepository(CarItem);
   }
-  
+
   public async createMany(data: ICarItem[]): Promise<ICarItem[]> {
     // Cria instâncias dos itens de carro a partir dos dados fornecidos
     const carItems = this.ormRepository.create(data);

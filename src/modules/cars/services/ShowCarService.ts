@@ -4,14 +4,11 @@ import { ICarRepository } from '@modules/cars/domain/repositories/ICarRepository
 import AppError from '@shared/errors/AppError';
 import { IShowRequestCar } from '../domain/models/IShowRequestCar';
 
-
-
 @injectable()
 class ShowCarService {
   constructor(
     @inject('CarRepository')
-    private carRepository: ICarRepository,
-    
+    private carRepository: ICarRepository
   ) {}
 
   public async execute({ id }: IShowRequestCar): Promise<Cars> {

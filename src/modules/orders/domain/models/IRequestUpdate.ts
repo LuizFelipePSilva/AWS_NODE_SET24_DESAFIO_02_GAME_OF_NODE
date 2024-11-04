@@ -1,4 +1,4 @@
-export interface IRequestUpdateOrder{
+export interface IRequestUpdateOrder {
   id: string;
   orderDate: Date;
   purchaseDate: Date;

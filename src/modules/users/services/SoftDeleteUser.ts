@@ -11,7 +11,7 @@ class SoftDeleteUserService {
     private userRepository: IUserRepository
   ) {}
 
-  public async execute({id}: IRequestFindUserById): Promise<IUser> {
+  public async execute({ id }: IRequestFindUserById): Promise<IUser> {
     const user = await this.userRepository.findById(id);
 
     if (!user) {

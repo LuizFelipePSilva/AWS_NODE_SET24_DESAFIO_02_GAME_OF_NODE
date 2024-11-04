@@ -2,7 +2,7 @@ import { container } from 'tsyringe';
 import 'reflect-metadata';
 import { OrderRepository } from '@modules/orders/infra/typeorm/repositories/OrderRepository';
 import { IOrderRepository } from '@modules/orders/domain/repositories/IOrderRepository';
-import CarRepository  from '@modules/cars/infra/typeorm/repositories/CarRepository';
+import CarRepository from '@modules/cars/infra/typeorm/repositories/CarRepository';
 import { ICarRepository } from '@modules/cars/domain/repositories/ICarRepository';
 import { IUserRepository } from '@modules/users/domain/repositories/IUserRepository';
 import { UserRepository } from '@modules/users/infra/typeorm/repositories/UserRepository';
@@ -16,28 +16,19 @@ import CarItemRepository from '@modules/cars/infra/typeorm/repositories/CarItemR
 
 container.registerSingleton<IOrderRepository>(
   'OrdersRepository',
-  OrderRepository,
-);;
+  OrderRepository
+);
 
-container.registerSingleton<ICarRepository>(
-  'CarRepository',
-  CarRepository,
-);;
+container.registerSingleton<ICarRepository>('CarRepository', CarRepository);
 
 container.registerSingleton<ICarItemRepository>(
   'CarItemRepository',
-  CarItemRepository,
-);;
+  CarItemRepository
+);
 
-container.registerSingleton<IUserRepository>(
-  'UserRepository',
-  UserRepository
-);;
+container.registerSingleton<IUserRepository>('UserRepository', UserRepository);
 
 container.registerSingleton<IClientRepository>(
-  'ClientRepository', 
+  'ClientRepository',
   ClientRepository
-);;
-
-
-
+);

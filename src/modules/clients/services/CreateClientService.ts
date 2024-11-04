@@ -4,7 +4,6 @@ import { ICreateClient } from '../domain/models/ICreateClient';
 import { IClient } from '../domain/models/IClient';
 import { inject, injectable } from 'tsyringe';
 
-
 function isValidCPF(cpf: string): boolean {
   // Remove caracteres que não tem numéricos
   cpf = cpf.replace(/[^\d]+/g, '');
@@ -13,7 +12,6 @@ function isValidCPF(cpf: string): boolean {
 
   let sum = 0;
   let remainder;
-
 
   for (let i = 1; i <= 9; i++) {
     sum += parseInt(cpf.charAt(i - 1)) * (11 - i);
@@ -31,7 +29,7 @@ function isValidCPF(cpf: string): boolean {
   if (remainder === 10 || remainder === 11) remainder = 0;
   if (remainder !== parseInt(cpf.charAt(10))) return false;
 
-  return true
+  return true;
 }
 
 interface IRequest {
@@ -44,14 +42,18 @@ interface IRequest {
 
 @injectable()
 class CreateClientService {
-
   constructor(
     @inject('ClientRepository')
-    private clientRepository: IClientRepository){
-  }
+    private clientRepository: IClientRepository
+  ) {}
 
-  public async execute({ fullName, email, cpf, birthDate, phone }: ICreateClient): Promise<IClient> {    
-  
+  public async execute({
+    fullName,
+    email,
+    cpf,
+    birthDate,
+    phone,
+  }: ICreateClient): Promise<IClient> {
     if (!isValidCPF(cpf)) {
       throw new AppError('Invalid CPF.');
     }

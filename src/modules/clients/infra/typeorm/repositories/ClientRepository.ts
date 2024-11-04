@@ -8,23 +8,35 @@ import { IClientPaginate } from '@modules/clients/domain/models/IClientPaginate'
 
 class ClientRepository implements IClientRepository {
   [x: string]: any;
-  
+
   private ormRepository: Repository<Client>;
 
   constructor() {
-    this.ormRepository = getRepository(Client)
+    this.ormRepository = getRepository(Client);
   }
 
-  public async create({ fullName, birthDate, cpf, email, phone}: ICreateClient): Promise<Client> {
-    const client = this.ormRepository.create({fullName, birthDate, cpf, email, phone})
+  public async create({
+    fullName,
+    birthDate,
+    cpf,
+    email,
+    phone,
+  }: ICreateClient): Promise<Client> {
+    const client = this.ormRepository.create({
+      fullName,
+      birthDate,
+      cpf,
+      email,
+      phone,
+    });
 
-    await this.ormRepository.save(client)
+    await this.ormRepository.save(client);
 
     return client;
   }
 
   public async save(client: Client): Promise<Client> {
-    await this.ormRepository.save(client)
+    await this.ormRepository.save(client);
 
     return client;
   }
@@ -50,7 +62,7 @@ class ClientRepository implements IClientRepository {
       where: {
         email,
       },
-    });  
+    });
   }
 
   public async findByCPF(cpf: string): Promise<Client | undefined> {
@@ -74,10 +86,14 @@ class ClientRepository implements IClientRepository {
 
     // Filtros
     if (params.c) {
-      query.andWhere('client.nome LIKE :nome', { fullname: `%${params.fullname}%` });
+      query.andWhere('client.nome LIKE :nome', {
+        fullname: `%${params.fullname}%`,
+      });
     }
     if (params.email) {
-      query.andWhere('client.email LIKE :email', { email: `%${params.email}%` });
+      query.andWhere('client.email LIKE :email', {
+        email: `%${params.email}%`,
+      });
     }
     if (params.cpf) {
       query.andWhere('client.email LIKE :cpf', { cpf: `%${params.cpf}%` });

@@ -10,18 +10,24 @@ interface IRequest {
   email?: string;
   cpf?: string;
   birthDate?: Date;
-  phone?: string; 
+  phone?: string;
 }
 
 @injectable()
 class UpdateClientService {
-
   constructor(
     @inject('ClientRepository')
-    private clientRepository: ClientRepository){
-  }
-  
-  public async execute({ id, fullName, email, cpf, birthDate, phone }: IRequest): Promise<Client> {
+    private clientRepository: ClientRepository
+  ) {}
+
+  public async execute({
+    id,
+    fullName,
+    email,
+    cpf,
+    birthDate,
+    phone,
+  }: IRequest): Promise<Client> {
     const client = await this.clientRepository.findById(id);
 
     if (!client) {
@@ -49,12 +55,12 @@ class UpdateClientService {
     client.email = email || client.email;
     client.cpf = cpf || client.cpf;
     client.phone = phone || client.phone;
-    client.birthDate = birthDate|| client.birthDate;
+    client.birthDate = birthDate || client.birthDate;
 
     await this.clientRepository.save(client);
-    
+
     return client;
   }
 }
 
-export default UpdateClientService
+export default UpdateClientService;

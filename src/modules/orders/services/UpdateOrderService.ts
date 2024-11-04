@@ -10,7 +10,7 @@ const validUFs = ['AL', 'BA', 'CE', 'MA', 'PB', 'PE', 'PI', 'RN', 'SE'];
 class UpdateOrderService {
   constructor(
     @inject('OrdersRepository')
-    private ordersRepository: IOrderRepository,
+    private ordersRepository: IOrderRepository
   ) {}
 
   public async execute({
@@ -26,18 +26,20 @@ class UpdateOrderService {
       throw new AppError('Order not found.');
     }
 
-    if ( orderDate &&  orderDate < new Date()) {
+    if (orderDate && orderDate < new Date()) {
       throw new AppError('Data Hora Inicial não pode ser menor que hoje.');
     }
 
-    if (purchaseDate &&  orderDate && purchaseDate <  orderDate) {
-      throw new AppError('Data Hora Final não pode ser menor que Data Hora Inicial.');
+    if (purchaseDate && orderDate && purchaseDate < orderDate) {
+      throw new AppError(
+        'Data Hora Final não pode ser menor que Data Hora Inicial.'
+      );
     }
 
     let cidade, uf;
     if (cep) {
       const resp = await axios(`https://viacep.com.br/ws/${cep}/json/`);
-      const cepData = await resp.data
+      const cepData = await resp.data;
       if (cepData.erro) {
         throw new AppError('CEP não encontrado.');
       }
@@ -59,19 +61,15 @@ class UpdateOrderService {
       if (status === 'Aprovado') {
         if (order.status !== 'Aberto') {
           throw new AppError('Apenas pedidos abertos podem ser aprovados.');
+        } else {
+          order.purchaseDate = new Date();
         }
-        else {
-          order.purchaseDate = new Date()
-        }
-
       } else if (status === 'Cancelado') {
         if (order.status !== 'Aberto') {
           throw new AppError('Apenas pedidos abertos podem ser cancelados.');
-        }
-        else {
+        } else {
           order.cancellationDate = new Date();
         }
-        
       }
       order.status = status;
     }
@@ -79,9 +77,7 @@ class UpdateOrderService {
     await this.ordersRepository.update(order);
 
     return order;
-
   }
 }
 
 export default UpdateOrderService;
-

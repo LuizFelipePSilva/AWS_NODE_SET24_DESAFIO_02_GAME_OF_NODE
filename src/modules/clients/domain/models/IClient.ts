@@ -6,5 +6,5 @@ export interface IClient {
   email: string;
   phone: string;
   createdAt: Date;
-  deletedAt: Date
+  deletedAt: Date;
 }
