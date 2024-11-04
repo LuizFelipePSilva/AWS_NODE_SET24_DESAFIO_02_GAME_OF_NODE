@@ -90,6 +90,6 @@ export default class UserController {
     const softDelete = container.resolve(SoftDeleteUserService);
     const user = await softDelete.execute({ id });
 
-    return response.json(user);
+    return response.send().status(204);
   }
 }
