@@ -28,9 +28,9 @@ export class OrderRepository implements IOrderRepository {
     return (await this.ormRepository.findOne(id)) || null;
   }
 
-  public async findByClient(id: string): Promise<Order | null> {
+  public async findByClient(id: string): Promise<Order[] | null> {
     return (
-      (await this.ormRepository.findOne({
+      (await this.ormRepository.find({
         where: {
           clientId: id,
         },

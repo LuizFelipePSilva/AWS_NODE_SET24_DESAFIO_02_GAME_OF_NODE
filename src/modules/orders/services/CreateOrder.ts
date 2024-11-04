@@ -32,9 +32,9 @@ class CreateOrderService {
     }
     const orderIsOpen = await this.ordersRepository.findByClient(clientId);
 
-    const verifyClientOrder = orderIsOpen?.status === 'Aberto';
-
-    if (verifyClientOrder) {
+    const verifyClientOrder = orderIsOpen?.filter((order) => order.status === 'Aberto')
+  
+    if (verifyClientOrder && orderIsOpen?.length === 1) {
       throw new AppError('Cliente tem um pedido em aberto');
     }
 
