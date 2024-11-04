@@ -1,7 +1,7 @@
-import { Router } from "express";
-import UserController from "../controllers/UserController";
-import { celebrate, Joi, Segments } from "celebrate";
-import isAuthenticate from "@shared/infra/http/middlewares/isAuthenticated";
+import { Router } from 'express';
+import UserController from '../controllers/UserController';
+import { celebrate, Joi, Segments } from 'celebrate';
+import isAuthenticate from '@shared/infra/http/middlewares/isAuthenticated';
 
 const userController = new UserController();
 const userRoutes = Router();
@@ -18,13 +18,7 @@ userRoutes.post(
   userController.create
 );
 
-
-userRoutes.get(
-  '/',
-  isAuthenticate,
-  userController.index
-);
-
+userRoutes.get('/', isAuthenticate, userController.index);
 
 userRoutes.get(
   '/:id',
@@ -36,7 +30,6 @@ userRoutes.get(
   isAuthenticate,
   userController.show
 );
-
 
 userRoutes.patch(
   '/:id',
@@ -53,7 +46,6 @@ userRoutes.patch(
   isAuthenticate,
   userController.update
 );
-
 
 userRoutes.delete(
   '/:id',

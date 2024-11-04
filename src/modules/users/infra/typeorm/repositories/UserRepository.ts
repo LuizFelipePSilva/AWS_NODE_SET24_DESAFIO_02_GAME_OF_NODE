@@ -4,6 +4,7 @@ import { IUserRepository } from '@modules/users/domain/repositories/IUserReposit
 import { getRepository, Repository } from 'typeorm';
 import { User } from '../entities/User';
 import { IShowUsersParams } from '@modules/users/domain/models/IShowUsersParams';
+import { IFindUser } from '@modules/users/domain/models/IFindUser';
 
 export class UserRepository implements IUserRepository {
   private ormRepository: Repository<User>;
@@ -22,11 +23,15 @@ export class UserRepository implements IUserRepository {
     return await this.ormRepository.save(user);
   }
 
+  async delete(id: string): Promise<void> {
+    await this.ormRepository.softDelete(id);
+  }
+
   public async findById(id: string): Promise<IUser | null> {
     return (await this.ormRepository.findOne(id)) || null;
   }
 
-  public async findByEmail(email: string): Promise<IUser | null> {
+  public async findByEmail(email: string): Promise<IFindUser | null> {
     return (await this.ormRepository.findOne({ where: { email } })) || null;
   }
 

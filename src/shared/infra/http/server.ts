@@ -18,7 +18,6 @@ app.use(errors());
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof Error) {
-    // Erros esperados
     return res.status(400).json({
       status: 'error',
       message: err.message,
