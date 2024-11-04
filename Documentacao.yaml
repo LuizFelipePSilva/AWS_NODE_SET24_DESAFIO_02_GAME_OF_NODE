@@ -2,14 +2,14 @@ openapi: 3.0.3
 info:
   title: Compass Cars 0.1
   description: |-
-   Esta documentação foi elaborada para a API de um sistema de gerenciamento de carros, que permite a criação e administração de usuários com o intuito de facilitar a gestão de clientes, veículos e pedidos de serviço. Na API, é possível criar usuários administradores responsáveis pelo controle de todas as operações do sistema. Estes administradores podem registrar novos clientes, gerenciar o catálogo de carros e adicionar novos pedidos de serviço conforme necessário.
+   Esta documentação foi elaborada para a API de um sistema de gerenciamento de carros, que permite a criação e administração de usuários com o intuito de facilitar a gestão de clientes, veículos e pedido de compra. Na API, é possível criar usuários administradores responsáveis pelo controle de todas as operações do sistema. Estes administradores podem registrar novos clientes, gerenciar o catálogo de carros e adicionar novos pedidos de serviço conforme necessário.
    
    A estrutura da API inclui endpoints para gerenciar cada uma dessas entidades:
 
    - Usuários: permitem a criação e autenticação de administradores, com segurança implementada para proteger os dados de acesso.
    - Clientes: os administradores podem cadastrar e gerenciar os dados dos clientes, possibilitando um controle detalhado sobre quem utiliza o serviço.
    - Carros: permite o cadastro e atualização das informações dos veículos, como modelo, marca, ano e outras características essenciais.
-   - Pedidos: possibilita a criação de ordens de serviço para registrar atividades de manutenção, reparos ou quaisquer outros serviços solicitados pelos clientes.
+   - Pedidos: possibilita a criação de pedidos de compra de veiculos.
     
     Essa documentação visa garantir que todos os administradores consigam utilizar a API de forma consistente e eficiente, seguindo padrões claros para cada operação, o que inclui parâmetros obrigatórios, estrutura de requisições e respostas, além de exemplos de uso.
 
