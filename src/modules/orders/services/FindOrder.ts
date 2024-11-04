@@ -16,7 +16,7 @@ interface SearchParams {
 class ListOrderService {
   constructor(
     @inject('OrdersRepository')
-    private ordersRepository: IOrderRepository,
+    private ordersRepository: IOrderRepository
   ) {}
 
   public async execute({
@@ -33,7 +33,8 @@ class ListOrderService {
     const filters: any = {
       ...(status && { status }),
       ...(cpf && { clientCpf: cpf }),
-      ...(startDate && endDate && { orderDateRange: { start: startDate, end: endDate } }),
+      ...(startDate &&
+        endDate && { orderDateRange: { start: startDate, end: endDate } }),
       ...(startDate && !endDate && { orderDate: { $gte: startDate } }),
       ...(!startDate && endDate && { orderDate: { $lte: endDate } }),
     };

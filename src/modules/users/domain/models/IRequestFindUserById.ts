@@ -1,4 +1,3 @@
 export interface IRequestFindUserById {
-    id: string;
-  }
-  
+  id: string;
+}

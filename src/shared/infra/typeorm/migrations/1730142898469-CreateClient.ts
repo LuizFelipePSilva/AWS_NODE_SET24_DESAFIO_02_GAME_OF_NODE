@@ -6,7 +6,12 @@ export class CreateClient1730142898469 implements MigrationInterface {
       new Table({
         name: 'clients',
         columns: [
-          { name: 'id', type: 'uuid', isPrimary: true, default: 'uuid_generate_v4()' },
+          {
+            name: 'id',
+            type: 'uuid',
+            isPrimary: true,
+            default: 'uuid_generate_v4()',
+          },
           { name: 'fullName', type: 'varchar', isNullable: false },
           { name: 'birthDate', type: 'date', isNullable: false },
           { name: 'cpf', type: 'varchar', isNullable: false },

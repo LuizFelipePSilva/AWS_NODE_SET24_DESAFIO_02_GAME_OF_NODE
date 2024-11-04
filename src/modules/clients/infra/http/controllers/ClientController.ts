@@ -32,9 +32,9 @@ export default class ClientsController {
       : undefined;
 
     const listClients = container.resolve(ListClientService);
-    
+
     // const clients = await listClients.execute();
-    
+
     const clients = await listClients.execute({
       page: pageNumber,
       size: pageSize,
@@ -58,7 +58,7 @@ export default class ClientsController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const { fullName, email, cpf, birthDate, phone } = request.body; 
+    const { fullName, email, cpf, birthDate, phone } = request.body;
 
     const createClient = container.resolve(CreateClientService);
 
@@ -98,7 +98,7 @@ export default class ClientsController {
     const deleteClient = container.resolve(DeleteClientService);
 
     await deleteClient.execute({ id });
-    
+
     return response.json([]);
   }
 }

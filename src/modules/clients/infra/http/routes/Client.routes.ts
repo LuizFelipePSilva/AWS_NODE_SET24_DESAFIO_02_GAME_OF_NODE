@@ -1,7 +1,7 @@
 // import clientRoute
 import isAuthenticate from '@shared/infra/http/middlewares/isAuthenticated';
 import { Router } from 'express';
-import ClientsController from "../controllers/ClientController";
+import ClientsController from '../controllers/ClientController';
 import { celebrate, Joi, Segments } from 'celebrate';
 
 const clientsController = new ClientsController();
@@ -19,7 +19,7 @@ clientRoutes.post(
     },
   }),
   isAuthenticate,
-  clientsController.create,
+  clientsController.create
 );
 
 clientRoutes.get('/', isAuthenticate, clientsController.index);
@@ -32,7 +32,7 @@ clientRoutes.get(
     },
   }),
   isAuthenticate,
-  clientsController.show,
+  clientsController.show
 );
 
 clientRoutes.patch(
@@ -50,7 +50,7 @@ clientRoutes.patch(
     },
   }),
   isAuthenticate,
-  clientsController.update,
+  clientsController.update
 );
 
 clientRoutes.delete(
@@ -61,7 +61,7 @@ clientRoutes.delete(
     },
   }),
   isAuthenticate,
-  clientsController.delete,
+  clientsController.delete
 );
 
 export default clientRoutes;

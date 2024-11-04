@@ -7,7 +7,7 @@ const orderController = new OrdersController();
 const orderRoute = Router();
 
 orderRoute.post(
-  '/', 
+  '/',
   isAuthenticate,
   celebrate({
     [Segments.BODY]: {
@@ -19,7 +19,6 @@ orderRoute.post(
   }),
   orderController.create
 );
-
 
 orderRoute.get(
   '/',
@@ -38,7 +37,6 @@ orderRoute.get(
   orderController.index
 );
 
-
 orderRoute.get(
   '/:id',
   isAuthenticate,
@@ -49,7 +47,6 @@ orderRoute.get(
   }),
   orderController.show
 );
-
 
 orderRoute.patch(
   '/:id',
