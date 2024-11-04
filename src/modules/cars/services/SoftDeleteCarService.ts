@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import Car from '@modules/cars/infra/typeorm/entities/Cars';
 import { ICarRepository } from '@modules/cars/domain/repositories/ICarRepository';
+import { statusEnum } from '@modules/cars/infra/typeorm/entities/Cars';
 
 @injectable()
 class SoftDeleteCarService {
@@ -18,16 +19,16 @@ class SoftDeleteCarService {
     }
 
     // Verificar se o carro já está excluído
-    if (car.status === 'Excluido') {
+    if (car.status == statusEnum.excluido) {
       throw new AppError('Carro já está excluído.', 400);
     }
 
     // Soft delete: Atualizar o status para "Excluído" e setar o updateAt com a data atual
-    car.status = 'Excluido';
+    car.status = statusEnum.excluido;
     car.updatedAt = new Date();
 
     
-    await this.carRepository.update(car);
+    await this.carRepository.softDelete(carId);
 
     return car;
   }
