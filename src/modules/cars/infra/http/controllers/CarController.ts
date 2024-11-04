@@ -54,7 +54,7 @@ export default class CarController {
     const { plate, mark, model, km, year, items, price } = request.body;
 
     const createCar = container.resolve(CreateCarService);
-    try{
+    
       const car = await createCar.execute({
         plate,
         mark,
@@ -66,9 +66,8 @@ export default class CarController {
       });
     
       return response.json(car);
-    }catch(error){
-      return response.send(error);
-    }
+  
+    
   }
 
   public async findById(request: Request, response: Response): Promise<Response> {
@@ -76,12 +75,10 @@ export default class CarController {
 
     const showCarService = container.resolve(ShowCarService);
     
-    try {
+    
       const car = await showCarService.execute({ id });
       return response.json(car);
-    } catch (error) {
-      return response.send(error);
-    }
+    
   }
 
   public async softDelete(request: Request, response: Response): Promise<Response> {
@@ -90,15 +87,11 @@ export default class CarController {
 
     const softDeleteCarService = container.resolve(SoftDeleteCarService);
     
-    try{
-
+    
       const car = await softDeleteCarService.execute(id);
 
       return response.json(car);
-      
-    }catch(error){
-      return response.json(error);
-    }
+    
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
