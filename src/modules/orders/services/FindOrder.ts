@@ -3,7 +3,7 @@ import { IOrderRepository } from '../domain/repositories/IOrderRepository';
 import { IOrderPaginate } from '../domain/models/IOrderPaginate';
 import AppError from '@shared/errors/AppError';
 
-interface SearchParams {
+export interface SearchParams {
   page: number;
   limit: number;
   status?: string;
@@ -43,8 +43,6 @@ class ListOrderService {
       page,
       skip,
       take,
-      order: { orderDate: 'DESC' },
-      filters,
     });
 
     if (orders.data.length === 0) {

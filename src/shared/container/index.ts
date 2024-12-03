@@ -5,7 +5,7 @@ import { IOrderRepository } from '@modules/orders/domain/repositories/IOrderRepo
 import CarRepository from '@modules/cars/infra/typeorm/repositories/CarRepository';
 import { ICarRepository } from '@modules/cars/domain/repositories/ICarRepository';
 import { IUserRepository } from '@modules/users/domain/repositories/IUserRepository';
-import { UserRepository } from '@modules/users/infra/typeorm/repositories/UserRepository';
+import  UserRepository from '@modules/users/infra/typeorm/repositories/UserRepository';
 import { IClientRepository } from '@modules/clients/domain/repositories/IClientRepository';
 import ClientRepository from '@modules/clients/infra/typeorm/repositories/ClientRepository';
 
