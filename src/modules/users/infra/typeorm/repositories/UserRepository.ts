@@ -2,11 +2,11 @@ import { IUser } from '@modules/users/domain/models/IUser';
 import { IUserPaginate } from '@modules/users/domain/models/IUserPaginate';
 import { IUserRepository } from '@modules/users/domain/repositories/IUserRepository';
 import { getRepository, Repository } from 'typeorm';
-import User from '@modules/users/infra/typeorm/entities/User';
+import { User } from '../entities/User';
 import { IShowUsersParams } from '@modules/users/domain/models/IShowUsersParams';
 import { IFindUser } from '@modules/users/domain/models/IFindUser';
 
-export default class UserRepository implements IUserRepository {
+export class UserRepository implements IUserRepository {
   private ormRepository: Repository<User>;
 
   constructor() {

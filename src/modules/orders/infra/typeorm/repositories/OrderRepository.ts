@@ -17,7 +17,7 @@ interface SearchParams {
   };
 }
 
-export default class OrderRepository implements IOrderRepository {
+export class OrderRepository implements IOrderRepository {
   private ormRepository: Repository<Order>;
 
   constructor() {
