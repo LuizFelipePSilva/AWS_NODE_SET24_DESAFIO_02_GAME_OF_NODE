@@ -1,6 +1,6 @@
 import { getRepository } from "typeorm";
 import bcrypt from 'bcryptjs';
-import { User } from "@modules/users/infra/typeorm/entities/User";
+import  User from "@modules/users/infra/typeorm/entities/User";
 
 async function createAdminUser() {
   const userRepository = getRepository(User);
