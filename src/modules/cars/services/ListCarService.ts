@@ -2,7 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import { ICarRepository } from '@modules/cars/domain/repositories/ICarRepository';
 import { ICar } from '@modules/cars/domain/models/ICar';
 
-export interface IRequest {
+interface IRequest {
   status?: 'Ativo' | 'Inativo';
   plateEnd?: string;
   mark?: string;

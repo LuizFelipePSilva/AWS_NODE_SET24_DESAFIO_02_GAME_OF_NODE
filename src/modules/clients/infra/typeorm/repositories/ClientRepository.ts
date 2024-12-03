@@ -85,7 +85,7 @@ class ClientRepository implements IClientRepository {
     const query = this.ormRepository.createQueryBuilder('client');
 
     // Filtros
-    if (params.fullname) {
+    if (params.c) {
       query.andWhere('client.nome LIKE :nome', {
         fullname: `%${params.fullname}%`,
       });

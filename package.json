@@ -9,17 +9,13 @@
     "lint": "eslint 'src/**/*.{ts,js}'",
     "lint-fix": "eslint --fix 'src/**/*.{ts,js}'",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "typeorm-create": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -n",
-    "test": "jest",
-    "secure-node": "jest --watch"
+    "typeorm-create": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -n"
   },
   "devDependencies": {
     "@eslint/js": "9.13.0",
-    "@jest/globals": "^29.7.0",
     "@types/bcryptjs": "2.4.2",
     "@types/cors": "2.8.9",
     "@types/express": "4.17.11",
-    "@types/jest": "^29.5.14",
     "@types/joi": "17.2.3",
     "@types/jsonwebtoken": "8.5.0",
     "@types/multer": "1.4.5",
@@ -31,17 +27,13 @@
     "eslint-config-prettier": "6.15.0",
     "eslint-plugin-prettier": "3.2.0",
     "globals": "15.11.0",
-    "jest": "^29.7.0",
     "prettier": "2.2.1",
-    "supertest": "^7.0.0",
-    "ts-jest": "^29.2.5",
     "ts-node-dev": "2.0.0",
     "tsconfig-paths": "3.9.0",
-    "typescript": "^5.7.2",
+    "typescript": "5.6.3",
     "typescript-eslint": "^8.12.2"
   },
   "dependencies": {
-    "@types/supertest": "^6.0.2",
     "axios": "^1.7.7",
     "bcryptjs": "2.4.3",
     "celebrate": "13.0.4",
