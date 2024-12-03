@@ -1,6 +1,6 @@
 import { container } from 'tsyringe';
 import 'reflect-metadata';
-import OrderRepository from '@modules/orders/infra/typeorm/repositories/OrderRepository';
+import { OrderRepository } from '@modules/orders/infra/typeorm/repositories/OrderRepository';
 import { IOrderRepository } from '@modules/orders/domain/repositories/IOrderRepository';
 import CarRepository from '@modules/cars/infra/typeorm/repositories/CarRepository';
 import { ICarRepository } from '@modules/cars/domain/repositories/ICarRepository';
