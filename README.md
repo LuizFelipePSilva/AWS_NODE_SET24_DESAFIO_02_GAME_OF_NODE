@@ -534,7 +534,7 @@ API para um sistema de compra de carros, com autenticação, CRUD para usuários
 	"client": {
 		"id": "6aab797b-7358-48c4-9284-9c0aa21e4afd",
 		"fullName": "Luiz Felipe",
-		"cpf": "15772070410",
+		"cpf": "00000000000",
 		"email": "feipe12@gmail.com"
 	},
 	"car": {
@@ -578,7 +578,7 @@ API para um sistema de compra de carros, com autenticação, CRUD para usuários
 			"uf": "RN",
 			"clientId": "6aab797b-7358-48c4-9284-9c0aa21e4afd",
 			"clientName": "Luiz Felipe",
-			"clientCpf": "15772070410"
+			"clientCpf": "00000000000"
 		}
 	],
 	"total": 1,
